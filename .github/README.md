@@ -1,0 +1,3 @@
+# followspot.nvim
+
+Under construction
