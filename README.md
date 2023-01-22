@@ -1,0 +1,1 @@
+# followspot.nvim
