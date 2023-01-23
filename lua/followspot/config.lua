@@ -3,15 +3,33 @@ local M = {}
 local defaults = {
     follow = {
         cursorline = true,
-        corsorcolumn = true,
-        winhighlight = false,
+        cursorcolumn = true,
+        -- winhighlight = false,
     },
     always = {
-        'help',
-        'git',
+        cursorline = {
+            -- 'help',
+        },
+        cursorcolumn = {
+            -- 'help',
+        },
+    },
+    always_on_focus = {
+        cursorline = {
+            'help',
+            -- 'lua',
+        },
+        cursorcolumn = {
+            -- 'help',
+        },
     },
     never = {
-
+        cursorline = {
+            'python',
+        },
+        cursorcolumn = {
+            'TelescopePrompt',
+        },
     },
 }
 
