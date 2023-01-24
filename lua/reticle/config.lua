@@ -17,7 +17,7 @@ local defaults = {
         cursorline = {},
         cursorcolumn = {},
     },
-    always_show_cl_number = true,
+    always_show_cl_number = false,
 }
 
 M.init = function(user_conf)
