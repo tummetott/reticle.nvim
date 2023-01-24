@@ -22,7 +22,7 @@ local defaults = {
 
 M.init = function(user_conf)
     user_conf = user_conf or {}
-    M.options = vim.tbl_deep_extend('force', defaults, user_conf)
+    M.settings = vim.tbl_deep_extend('force', defaults, user_conf)
 end
 
 return M

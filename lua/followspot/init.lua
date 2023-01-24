@@ -6,11 +6,29 @@ local get_opt = vim.api.nvim_win_get_option
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 local contains = vim.tbl_contains
-local cursorline_enabled = false
-local cursorcolumn_enabled = false
 local vim_enter = true
+local enabled = {
+    cursorline = false,
+    cursorcolumn = false,
+}
 
-local on_enter = function(opt)
+local update_enter = function(opt, settings, win_id)
+    local ft = vim.api.nvim_buf_get_option(0, 'filetype')
+    if contains(settings.never[opt], ft) then
+        set_opt(win_id, opt, false)
+    elseif contains(settings.on_focus[opt], ft) or
+        contains(settings.always[opt], ft) then
+        set_opt(win_id, opt, true)
+    elseif settings.follow[opt] then
+        if enabled[opt] then
+            set_opt(win_id, opt, true)
+        else
+            set_opt(win_id, opt, false)
+        end
+    end
+end
+
+local on_enter = function(settings)
     -- Don't do anything for special buffers
     if contains({
         'nofile',
@@ -19,50 +37,27 @@ local on_enter = function(opt)
         'prompt',
     }, vim.bo.buftype) then return end
     local win_id = vim.api.nvim_get_current_win()
-    local ft = vim.api.nvim_buf_get_option(0, 'filetype')
     if vim_enter then
-        cursorline_enabled = get_opt(win_id, 'cursorline')
-        cursorcolumn_enabled = get_opt(win_id, 'cursorcolumn')
+        enabled.cursorline = get_opt(win_id, 'cursorline')
+        enabled.cursorcolumn = get_opt(win_id, 'cursorcolumn')
         vim_enter = false
     end
-    if contains(opt.never.cursorline, ft) then
-        set_opt(win_id, 'cursorline', false)
-    elseif contains(opt.on_focus.cursorline, ft) or
-        contains(opt.always.cursorline, ft) then
-        set_opt(win_id, 'cursorline', true)
-    elseif opt.follow.cursorline then
-        if cursorline_enabled then
-            set_opt(win_id, 'cursorline', true)
-        else
-            set_opt(win_id, 'cursorline', false)
-        end
-    end
-    if contains(opt.never.cursorcolumn, ft) then
-        set_opt(win_id, 'cursorcolumn', false)
-    elseif contains(opt.on_focus.cursorcolumn, ft) or
-        contains(opt.always.cursorcolumn, ft) then
-        set_opt(win_id, 'cursorcolumn', true)
-    elseif opt.follow.cursorcolumn then
-        if cursorcolumn_enabled then
-            set_opt(win_id, 'cursorcolumn', true)
-        else
-            set_opt(win_id, 'cursorcolumn', false)
+    update_enter('cursorline', settings, win_id)
+    update_enter('cursorcolumn', settings, win_id)
+end
+
+local update_leave = function(opt, settings)
+    local ft = vim.api.nvim_buf_get_option(0, 'filetype')
+    if not contains(settings.always[opt], ft) then
+        if contains(settings.on_focus[opt], ft) or settings.follow[opt] then
+            set_opt(0, opt, false)
         end
     end
 end
 
-local on_leave = function(opt)
-    local ft = vim.bo.filetype
-    if not contains(opt.always.cursorline, ft) then
-        if contains(opt.on_focus.cursorline, ft) or opt.follow.cursorline then
-            set_opt(0, 'cursorline', false)
-        end
-    end
-    if not contains(opt.always.cursorcolumn, ft) then
-        if contains(opt.on_focus.cursorcolumn, ft) or opt.follow.cursorcolumn then
-            set_opt(0, 'cursorcolumn', false)
-        end
-    end
+local on_leave = function(settings)
+    update_leave('cursorline', settings)
+    update_leave('cursorcolumn', settings)
 end
 
 local on_option_change = function()
@@ -77,21 +72,21 @@ local on_option_change = function()
             'terminal',
             'prompt',
         }, buf_type) then
-            cursorline_enabled = get_opt(win_id, 'cursorline')
-            cursorcolumn_enabled = get_opt(win_id, 'cursorcolumn')
+            enabled.cursorline = get_opt(win_id, 'cursorline')
+            enabled.cursorcolumn = get_opt(win_id, 'cursorcolumn')
         end
     end
 end
 
 local register_autocmds = function()
-    local opt = config.options
-    local group = augroup('Followspot', { clear = true })
+    local settings = config.settings
+    local group = augroup('Reticle', { clear = true })
     autocmd({ 'WinEnter', 'BufWinEnter' }, {
-        callback = function() on_enter(opt) end,
+        callback = function() on_enter(settings) end,
         group = group,
     })
     autocmd('WinLeave', {
-        callback = function() on_leave(opt) end,
+        callback = function() on_leave(settings) end,
         group = group,
     })
     autocmd('OptionSet', {
