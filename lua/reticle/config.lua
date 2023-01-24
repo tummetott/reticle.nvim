@@ -4,7 +4,6 @@ local defaults = {
     follow = {
         cursorline = true,
         cursorcolumn = true,
-        -- winhighlight = false,
     },
     always = {
         cursorline = {},
@@ -18,6 +17,7 @@ local defaults = {
         cursorline = {},
         cursorcolumn = {},
     },
+    always_show_cl_number = true,
 }
 
 M.init = function(user_conf)
