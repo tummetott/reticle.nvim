@@ -7,29 +7,16 @@ local defaults = {
         -- winhighlight = false,
     },
     always = {
-        cursorline = {
-            -- 'help',
-        },
-        cursorcolumn = {
-            -- 'help',
-        },
+        cursorline = {},
+        cursorcolumn = {},
     },
-    always_on_focus = {
-        cursorline = {
-            'help',
-            -- 'lua',
-        },
-        cursorcolumn = {
-            -- 'help',
-        },
+    on_focus = {
+        cursorline = {},
+        cursorcolumn = {},
     },
     never = {
-        cursorline = {
-            'python',
-        },
-        cursorcolumn = {
-            'TelescopePrompt',
-        },
+        cursorline = {},
+        cursorcolumn = {},
     },
 }
 
