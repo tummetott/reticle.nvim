@@ -1,6 +1,6 @@
 local M = {}
 
-local config = require('followspot.config')
+local config = require('reticle.config')
 local set_opt = vim.api.nvim_win_set_option
 local get_opt = vim.api.nvim_win_get_option
 local autocmd = vim.api.nvim_create_autocmd
