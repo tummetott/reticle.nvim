@@ -10,6 +10,7 @@ The `cursorline` setting makes it easy to locate the cursor position. However, w
 
 This plugin avoids the clutter of multiple highlighted screen lines with split windows by disabling the `cursorline` and `cursorcolumn` settings for all but the current window. Unlike a simplistic solution with a few autocmds, this plugin still allows for exceptions like disabling the `cursorline` or `cursorcolumn` for a particular filetype or making it permanent for other filetypes. Furthermore, this plugin supports highlighting the (less intrusive) cursorline number in all split windows, while the cursorline is displayed only in the focused pane.
 
+
 ### ✨ Features
 
 - 🚶 Cursorline and / or cursorcolumn follow the focused window
@@ -187,6 +188,7 @@ The default configuration of `reticle.nvim` looks as following:
 
 - [vim-CursorLineCurrentWindow](https://github.com/inkarkat/vim-CursorLineCurrentWindow)
 - [vim-crosshais](https://github.com/bronson/vim-crosshairs)
+
 
 ### ⚠️  Caveats:
 
