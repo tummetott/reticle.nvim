@@ -8,18 +8,15 @@
 
 The `cursorline` setting makes it easy to locate the cursor position. However, when there are split windows, each one shows its cursorline, and there is no good indication of the currently active window.
 
-This plugin avoids the clutter of multiple highlighted screen lines with split windows by disabling the `cursorline` and `cursorcolumn` settings for all but the current window. Unlike a simplistic solution with a few autocmds, this plugin still allows for exceptions like disabling the `cursorline` or `cursorcolumn` for a particular filetype or making it permanent for other filetypes.
-
-This plugin also supports highlighting the (less intrusive) cursorline number in all split windows, while the cursor line is displayed only in the focused one.
+This plugin avoids the clutter of multiple highlighted screen lines with split windows by disabling the `cursorline` and `cursorcolumn` settings for all but the current window. Unlike a simplistic solution with a few autocmds, this plugin still allows for exceptions like disabling the `cursorline` or `cursorcolumn` for a particular filetype or making it permanent for other filetypes. Furthermore, this plugin supports highlighting the (less intrusive) cursorline number in all split windows, while the cursorline is displayed only in the focused pane.
 
 ### ✨ Features
 
 - 🚶 Cursorline and / or cursorcolumn follow the focused window
 - ♾️  Define filetypes that always show a cursorline and / or cursorcolumn
-- 👀 Define filetypes that always show a cursorline and / or cursorcolumn when window is
-  focused
+- 👀 Define filetypes that always show a cursorline and / or cursorcolumn when window is focused, regardless of the cursorline setting
 - ❌ Define filetypes that never show a cursorline and / or cursorcolumn
-- 🔦 Highlight the cursorline number even if the cursorline setting is switched off
+- 🔦 Always highlight the cursorline number of all windows, regardless of the cursorline setting
 - 💨 Written in LUA instead of vim script 
 
 
