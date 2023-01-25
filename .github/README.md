@@ -6,6 +6,11 @@
 
 ### :pencil: Description:
 
+The `cursorline` setting makes it easy to locate the cursor position. However, when there are split windows, each one shows its cursorline, and there is no good indication of the currently active window.
+
+This plugin avoids the clutter of multiple highlighted screen lines with split windows by disabling the `cursorline` and `cursorcolumn` settings for all but the current window. Unlike a simplistic solution with a few autocmds, this plugin still allows for exceptions like disabling the `cursorline` or `cursorcolumn` for a particular filetype or making it permanent for other filetypes.
+
+This plugin also supports highlighting the (less intrusive) cursorline number in all split windows, while the cursor line is displayed only in the focused one.
 
 ### ✨ Features
 
@@ -128,7 +133,7 @@ Change the `CursorLine`, `CursorColumn` and `CursorLineNr` hl-group as usual:
 
 ```
 -- Set color explicitly by defining a RGB value
-:highlight CursorLine guibg=#FF0000
+:highlight CursorLine guibg=#3C3836
 
 -- Link to other hl-group
 :highlight! link CursorLine Visual
@@ -140,10 +145,13 @@ Change the `CursorLine`, `CursorColumn` and `CursorLineNr` hl-group as usual:
 
 ```lua
 -- Set color explicitly by defining a RGB value
-vim.api.nvim_set_hl(0, 'CursorLineNr', { fg = '#FF0000', bg = '#00FF00' })
+vim.api.nvim_set_hl(0, 'CursorLineNr', { fg = '#FFFFFF' })
 
 -- Link to other hl-group
-vim.api.nvim_set_hl(0, 'CursorLineNr', { link = 'Error' })
+vim.api.nvim_set_hl(0, 'CursorLine', { link = 'Visual' })
+
+-- Underline the cursorline
+vim.api.nvim_set_hl(0, 'CursorLine', { underline = true })
 ```
 
 </details>
@@ -182,5 +190,11 @@ The default configuration of `reticle.nvim` looks as following:
 I wrote this plugin basically for myself, but then decided to share it. The
 plugin is extensively tested, but there may still be bugs in the code. Pull
 requests are welcome if you want to add more features.
+
+
+### 👯 Similar Plugins:
+
+- [vim-CursorLineCurrentWindow](https://github.com/inkarkat/vim-CursorLineCurrentWindow)
+- [vim-crosshais](https://github.com/bronson/vim-crosshairs)
 
 x Tummetott
