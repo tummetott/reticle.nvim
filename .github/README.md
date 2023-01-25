@@ -1,5 +1,7 @@
 # reticle.nvim
 
+<img src="./reticle.png" alt="reticle" style="zoom:30%;" />
+
 ### :pencil: Description:
 
 
@@ -111,18 +113,19 @@ require('reticle').setup {
 
     -- By default, nvim highlights the cursorline number only when the cursorline setting is
     -- switched on. When enabeling the following setting, the cursorline number
-    -- of every window is always highlighted
+    -- of every window is always highlighted, regardless of the setting
     always_show_cl_number = true,
 }
 ```
 
-Change the highlight of the `CursorLine` `CursorColumn` hl-group as usual:
+##### Change highlight groups
 
+Change the `CursorLine`, `CursorColumn` and `CursorLineNr` hl-group as usual:
 
 <details><summary>With ex command:</summary>
 
 ```
--- Set color with RGB value
+-- Set color explicitly by defining a RGB value
 :highlight CursorLine guibg=#FF0000
 
 -- Link to other hl-group
@@ -134,7 +137,7 @@ Change the highlight of the `CursorLine` `CursorColumn` hl-group as usual:
 <details><summary>With LUA command:</summary>
 
 ```lua
--- Set color with RGB value
+-- Set color explicitly by defining a RGB value
 vim.api.nvim_set_hl(0, 'CursorLineNr', { fg = '#FF0000', bg = '#00FF00' })
 
 -- Link to other hl-group
@@ -146,7 +149,7 @@ vim.api.nvim_set_hl(0, 'CursorLineNr', { link = 'Error' })
 ##### Default Configuration
 The default configuration of `reticle.nvim` looks as following:
 
-<details><summary>Click me</summary>
+<details><summary>Default config</summary>
 
 ```lua
 {
