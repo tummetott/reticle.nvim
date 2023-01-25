@@ -191,7 +191,7 @@ The default configuration of `reticle.nvim` looks as following:
 - [vim-CursorLineCurrentWindow](https://github.com/inkarkat/vim-CursorLineCurrentWindow)
 - [vim-crosshais](https://github.com/bronson/vim-crosshairs)
 
-### ⚠️  Disclaimer:
+### ⚠️  Caveats:
 
 I wrote this plugin basically for myself, but then decided to share it. The
 plugin is extensively tested, but there may still be bugs in the code. Pull
