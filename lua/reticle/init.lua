@@ -7,7 +7,10 @@ local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 local contains = vim.tbl_contains
 local vim_enter = true
-local enabled = {
+
+-- This state is accessible from other plugins, e.g. unimpaired.nvim uses it to
+-- properly toggle the cursorline when 'always_show_cl_number' is set
+M.enabled = {
     cursorline = false,
     cursorcolumn = false,
 }
@@ -23,8 +26,8 @@ end
 local on_vim_enter = function(win_id)
     settings = conf.settings
     -- Get the initial state from the options the user put in the vimrc
-    enabled.cursorline = get_opt(win_id, 'cursorline')
-    enabled.cursorcolumn = get_opt(win_id, 'cursorcolumn')
+    M.enabled.cursorline = get_opt(win_id, 'cursorline')
+    M.enabled.cursorcolumn = get_opt(win_id, 'cursorcolumn')
     if settings.always_show_cl_number then
         -- In order to always show the number, cursorline must remain switched on
         vim.api.nvim_win_set_option(win_id, 'cursorline', true)
@@ -41,7 +44,7 @@ local update_enter = function(opt, win_id)
         contains(settings.always[opt], ft) then
         set_opt(win_id, opt, true)
     elseif settings.follow[opt] then
-        if enabled[opt] then
+        if M.enabled[opt] then
             set_opt(win_id, opt, true)
         else
             set_opt(win_id, opt, false)
@@ -81,7 +84,7 @@ end
 
 -- Many plugins set a local cursorline in their windows. We must therefore
 -- filter for cursorline / cursorcolumn switches performed by the user
-local on_option_change = function()
+local on_option_change = function(state)
     local win_id = vim.api.nvim_get_current_win()
     local win_type = vim.fn.win_gettype(win_id)
     if win_type == '' then
@@ -93,15 +96,16 @@ local on_option_change = function()
             'terminal',
             'prompt',
         }, buf_type) then
-            -- Now we can be sure that the there is a valid switch, so we first update our state
-            enabled.cursorline = get_opt(win_id, 'cursorline')
-            enabled.cursorcolumn = get_opt(win_id, 'cursorcolumn')
-            if settings.always_show_cl_number then
-                -- In order to always show the number, cursorline must remain
-                -- switched on
-                vim.api.nvim_win_set_option(win_id, 'cursorline', true)
-                update_enter('cursorline', win_id)
-            else
+            -- Now we can be sure that the there is a valid switch
+            if state.match == 'cursorline' then
+                -- First get the state
+                M.enabled.cursorline = get_opt(win_id, 'cursorline')
+                if settings.always_show_cl_number then
+                    vim.api.nvim_win_set_option(win_id, 'cursorline', true)
+                    update_enter('cursorline', win_id)
+                end
+            elseif state.match == 'cursorcolumn' then
+                M.enabled.cursorcolumn = get_opt(win_id, 'cursorcolumn')
             end
         end
     end
@@ -119,7 +123,7 @@ local register_autocmds = function()
     })
     autocmd('OptionSet', {
         pattern = { 'cursorline', 'cursorcolumn' },
-        callback = function() on_option_change() end,
+        callback = function(state) on_option_change(state) end,
         group = group,
     })
 end
