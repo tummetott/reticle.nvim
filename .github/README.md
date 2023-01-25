@@ -1,6 +1,6 @@
 # reticle.nvim
 
-<img src="./reticle.png" width="200" height="200" />
+<img src="./reticle.png" alt="reticle" width="200" height="200" class="center" />
 
 ### :pencil: Description:
 
