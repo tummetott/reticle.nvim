@@ -5,12 +5,12 @@
 
 ### ✨ Features
 
-- 🚶 Cursorline and cursorcolumn follow the focused window
-- ♾️  Define filetypes which always show cursorline and / or cursorcolumn
-- 👀 Define filetypes which show cursorline and / or cursorcolumn when window is
+- 🚶 Cursorline and / or cursorcolumn follow the focused window
+- ♾️  Define filetypes that always show a cursorline and / or cursorcolumn
+- 👀 Define filetypes that always show a cursorline and / or cursorcolumn when window is
   focused
-- ❌ Define filetypes where cursorline and / or cursorcolumn are never shown
-- 🔢 Highlight cursorline number even if the cursorline is switched off
+- ❌ Define filetypes that never show a cursorline and / or cursorcolumn
+- 🔦 Highlight the cursorline number even if the cursorline setting is switched off
 - 💨 Written in LUA instead of vim script 
 
 
@@ -21,20 +21,31 @@
 
 ### 📦 Installation
 
-Install the plugin with your favourite package manager.
+Install the plugin with your favourite package manager and put this code
+somewhere in your LUA configs:
 
-Example using [packer](https://github.com/wbthomason/packer.nvim):
+```lua
+require('reticle').setup {
+    -- add options here or leave empty
+}
+```
+
+Installing `reticle.nvim` with [packer](https://github.com/wbthomason/packer.nvim):
+
+<details><summary>Click me</summary>
 
 ```lua
 use {
     'Tummetott/reticle.nvim',
     config = function()
-        require('unimpaired').setup {
+        require('reticle').setup {
             -- add options here or leave empty
         }
     end
 }
 ```
+
+</details>
 
 Turn on cursorline / cursorcolumn in LUA:
 ```lua
@@ -58,9 +69,79 @@ Customizing examples:
 
 ```lua
 require('reticle').setup {
+    -- Make the cursorline and cursorcolumn follow your active window. This
+    -- only works if the cursorline and cursorcolumn setting is switched on
+    -- beforehand. Default is true for both values
+    follow = {
+        cursorline = true,
+        cursorcolumn = true,
+    },
 
+    -- Define filetypes where the cursorline / cursorcolumn is always on,
+    -- regardless of the setting
+    always = {
+        cursorline = {
+            'python',
+            'text',
+        },
+        cursorcolumn = {
+            'python',
+        },
+    },
+
+    -- Define filetypes where the cursorline / cursorcolumn is always on when
+    -- the window is focused, regardless of the setting
+    on_focus = {
+        cursorline = {
+            'help',
+        },
+        cursorcolumn = {},
+    },
+
+    -- Define filetypes where the cursorline / cursorcolumn is never on,
+    -- regardless of the setting
+    never = {
+        cursorline = {
+            'json',
+        },
+        cursorcolumn = {
+            'json',
+        },
+    },
+
+    -- By default, nvim highlights the cursorline number only when the cursorline setting is
+    -- switched on. When enabeling the following setting, the cursorline number
+    -- of every window is always highlighted
+    always_show_cl_number = true,
 }
 ```
+
+Change the highlight of the `CursorLine` `CursorColumn` hl-group as usual:
+
+
+<details><summary>With ex command:</summary>
+
+```
+-- Set color with RGB value
+:highlight CursorLine guibg=#FF0000
+
+-- Link to other hl-group
+:highlight! link CursorLine Visual
+```
+
+</details>
+
+<details><summary>With LUA command:</summary>
+
+```lua
+-- Set color with RGB value
+vim.api.nvim_set_hl(0, 'CursorLineNr', { fg = '#FF0000', bg = '#00FF00' })
+
+-- Link to other hl-group
+vim.api.nvim_set_hl(0, 'CursorLineNr', { link = 'Error' })
+```
+
+</details>
 
 ##### Default Configuration
 The default configuration of `reticle.nvim` looks as following:
@@ -93,8 +174,8 @@ The default configuration of `reticle.nvim` looks as following:
 
 ### ⚠️  Disclaimer:
 
-I wrote this plugin basically for myself but decided to share it afterwards.
-I've tested this plugin extensively but there may still be bugs in the code.
-Pull requests are welcome if you like to add more features.
+I wrote this plugin basically for myself, but then decided to share it. The
+plugin is extensively tested, but there may still be bugs in the code. Pull
+requests are welcome if you want to add more features.
 
 x Tummetott
