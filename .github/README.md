@@ -1,8 +1,8 @@
 # reticle.nvim
 
-<div style="text-align: center;">
-<img src="./reticle.png" alt="reticle" width="200" height="200" />
-</div>
+<p align="center">
+  <img src="./reticle.png" alt="reticle" width="200" height="200" />
+</p>
 
 ### :pencil: Description:
 
