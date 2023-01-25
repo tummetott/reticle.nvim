@@ -43,7 +43,7 @@ Installing `reticle.nvim` with [packer](https://github.com/wbthomason/packer.nvi
 
 ```lua
 use {
-    'Tummetott/reticle.nvim',
+    'tummetott/reticle.nvim',
     config = function()
         require('reticle').setup {
             -- add options here or leave empty
