@@ -54,6 +54,9 @@ use {
 
 </details>
 
+
+### 🚀 Usage
+
 Turn on cursorline / cursorcolumn in LUA:
 ```lua
 vim.wo.cursorline = true
@@ -88,12 +91,9 @@ require('reticle').setup {
     -- regardless of the setting
     always = {
         cursorline = {
-            'python',
-            'text',
+            'qf',
         },
-        cursorcolumn = {
-            'python',
-        },
+        cursorcolumn = {},
     },
 
     -- Define filetypes where the cursorline / cursorcolumn is always on when
@@ -101,6 +101,7 @@ require('reticle').setup {
     on_focus = {
         cursorline = {
             'help',
+            'NvimTree',
         },
         cursorcolumn = {},
     },

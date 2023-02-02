@@ -14,7 +14,15 @@ local defaults = {
         cursorcolumn = {},
     },
     never = {
-        cursorline = {},
+        cursorline = {
+            'TelescopePrompt',
+        },
+        cursorcolumn = {},
+    },
+    ignore = {
+        cursorline = {
+            'NvimTree',
+        },
         cursorcolumn = {},
     },
     always_show_cl_number = false,
