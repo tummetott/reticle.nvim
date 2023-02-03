@@ -16,13 +16,12 @@ local defaults = {
     never = {
         cursorline = {
             'TelescopePrompt',
+            'DressingInput',
         },
         cursorcolumn = {},
     },
     ignore = {
-        cursorline = {
-            'NvimTree',
-        },
+        cursorline = {},
         cursorcolumn = {},
     },
     always_show_cl_number = false,
