@@ -91,7 +91,7 @@ require('reticle').setup {
     -- regardless of the setting
     always = {
         cursorline = {
-            'qf',
+            'json',
         },
         cursorcolumn = {},
     },
@@ -102,6 +102,7 @@ require('reticle').setup {
         cursorline = {
             'help',
             'NvimTree',
+            'packer',
         },
         cursorcolumn = {},
     },
@@ -110,10 +111,20 @@ require('reticle').setup {
     -- regardless of the setting
     never = {
         cursorline = {
-            'json',
+            'qf',
         },
         cursorcolumn = {
-            'json',
+            'qf',
+        },
+    },
+
+    -- Define filetypes which are ignored by the plugin
+    ignore = {
+        cursorline = {
+            'lspinfo',
+        },
+        cursorcolumn = {
+            'lspinfo',
         },
     },
 
@@ -123,6 +134,42 @@ require('reticle').setup {
     always_show_cl_number = true,
 }
 ```
+
+##### Default Configuration
+The default configuration of `reticle.nvim` looks as following:
+
+<details><summary>Default config</summary>
+
+```lua
+{
+    follow = {
+        cursorline = true,
+        cursorcolumn = true,
+    },
+    always = {
+        cursorline = {},
+        cursorcolumn = {},
+    },
+    on_focus = {
+        cursorline = {},
+        cursorcolumn = {},
+    },
+    never = {
+        cursorline = {
+            'TelescopePrompt',
+            'DressingInput',
+        },
+        cursorcolumn = {},
+    },
+    ignore = {
+        cursorline = {},
+        cursorcolumn = {},
+    },
+    always_show_cl_number = false,
+}
+```
+
+</details>
 
 ##### Change highlight groups
 
@@ -151,35 +198,6 @@ vim.api.nvim_set_hl(0, 'CursorLine', { link = 'Visual' })
 
 -- Underline the cursorline
 vim.api.nvim_set_hl(0, 'CursorLine', { underline = true })
-```
-
-</details>
-
-##### Default Configuration
-The default configuration of `reticle.nvim` looks as following:
-
-<details><summary>Default config</summary>
-
-```lua
-{
-    follow = {
-        cursorline = true,
-        cursorcolumn = true,
-    },
-    always = {
-        cursorline = {},
-        cursorcolumn = {},
-    },
-    on_focus = {
-        cursorline = {},
-        cursorcolumn = {},
-    },
-    never = {
-        cursorline = {},
-        cursorcolumn = {},
-    },
-    always_show_cl_number = false,
-}
 ```
 
 </details>
