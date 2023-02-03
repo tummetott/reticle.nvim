@@ -12,7 +12,7 @@ This plugin avoids the clutter of multiple highlighted screen lines with split w
 
 ### 🎥 Preview:
 
-<video src="./preview.mov"></video>
+![preview](./preview.gif)
 
 
 ### ✨ Features
