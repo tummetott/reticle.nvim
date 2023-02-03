@@ -210,7 +210,7 @@ vim.api.nvim_set_hl(0, 'CursorLine', { underline = true })
 ### 👯 Similar Plugins:
 
 - [vim-CursorLineCurrentWindow](https://github.com/inkarkat/vim-CursorLineCurrentWindow)
-- [vim-crosshais](https://github.com/bronson/vim-crosshairs)
+- [vim-crosshair](https://github.com/bronson/vim-crosshairs)
 
 
 ### ⚠️  Caveats:
