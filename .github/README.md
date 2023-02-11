@@ -66,6 +66,7 @@ Installing `reticle.nvim` with 💤 [lazy](https://github.com/folke/lazy.nvim):
 require('lazy').setup {
     {
         'tummetott/reticle.nvim',
+        event = 'VeryLazy', -- lazyload the plugin if you like
         opts = {
             -- add options here if you want to overwrite defaults
         },
