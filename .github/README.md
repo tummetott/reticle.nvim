@@ -95,6 +95,7 @@ As EX command:
 
 <details><summary>Example keymappings</summary>
 
+
 Define the following keymaps or use a plugin like [unimpaired.nvim](https://github.com/Tummetott/unimpaired.nvim).
 
 ```lua
