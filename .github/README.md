@@ -214,7 +214,7 @@ require('reticle').setup {
 }
 ```
 
-##### Default Configuration
+#### Default Configuration
 The default configuration of `reticle.nvim` looks as following:
 
 <details><summary>Default config</summary>
@@ -250,7 +250,7 @@ The default configuration of `reticle.nvim` looks as following:
 
 </details>
 
-##### Change highlight groups
+#### Change highlight groups
 
 Change the `CursorLine`, `CursorColumn` and `CursorLineNr` hl-group as usual:
 
