@@ -105,16 +105,14 @@ local on_leave = function()
     deferred_update_option_on_leave('cursorcolumn', window)
 end
 
--- Many plugins set a local cursorline in their windows and forget supression
--- the OptionSet event. We must therefore filter every OptionSet event for
--- cursorline / cursorcolumn changes by the user. As soon as we can be sure that
--- the user changed the setting, we update our plugin state
+-- Many plugins set a local cursorline in their window, therefore we can not
+-- distinguish between setlocal commands done by a user or by a plugin. However
+-- we can react on a global set command since there is probably no plugin
+-- changing the global option
 local on_option_change = function(state)
+    -- Exit if the command is not done globally
+    if vim.v.option_command ~= 'set' then return end
     local window = vim.api.nvim_get_current_win()
-    local win_type = vim.fn.win_gettype(window)
-    local buf_type = vim.bo.buftype
-    if contains({ 'command', 'autocmd' }, win_type) then return end
-    if contains({ 'nofile', 'prompt' }, buf_type) then return end
     if state.match == 'cursorline' then
         enabled.cursorline = vim.wo.cursorline
         update_option_on_enter('cursorline', window)

@@ -37,20 +37,18 @@ somewhere in your LUA configs:
 
 ```lua
 require('reticle').setup {
-    -- add options here or leave empty
+    -- add options here if you want to overwrite defaults
 }
 ```
 
-Installing `reticle.nvim` with [packer](https://github.com/wbthomason/packer.nvim):
-
-<details><summary>Click me</summary>
+<details><summary>Installing `reticle.nvim` with [packer](https://github.com/wbthomason/packer.nvim):</summary>
 
 ```lua
 use {
     'tummetott/reticle.nvim',
     config = function()
         require('reticle').setup {
-            -- add options here or leave empty
+            -- add options here if you want to overwrite defaults
         }
     end
 }
@@ -205,6 +203,16 @@ vim.api.nvim_set_hl(0, 'CursorLine', { underline = true })
 ```
 
 </details>
+
+
+### 🐛 Known Issues:
+
+- When the `always_show_cl_number = true`, it is not possible to toggle the
+  cursorline with `set cursorline!` or `set invcursorline`. Use
+  ```lua
+  require('reticle').toggle_cursorline()
+  ```
+  instead.
 
 
 ### 👯 Similar Plugins:
