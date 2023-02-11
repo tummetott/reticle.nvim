@@ -41,7 +41,9 @@ require('reticle').setup {
 }
 ```
 
-<details><summary>Installing `reticle.nvim` with [packer](https://github.com/wbthomason/packer.nvim):</summary>
+Installing `reticle.nvim` with 📦 [packer](https://github.com/wbthomason/packer.nvim):
+
+<details><summary>Click me</summary>
 
 ```lua
 use {
@@ -56,26 +58,101 @@ use {
 
 </details>
 
+Installing `reticle.nvim` with 💤 [lazy](https://github.com/folke/lazy.nvim):
+
+<details><summary>Click me</summary>
+
+```lua
+require('lazy').setup {
+    {
+        'tummetott/reticle.nvim',
+        opts = {
+            -- add options here if you want to overwrite defaults
+        },
+    },
+}
+```
+
+</details>
+
 
 ### 🚀 Usage
 
-Turn on cursorline / cursorcolumn in LUA:
+Change the global options `cursorline` and `cursorcolumn` to your needs in your
+lua config or define keymaps in order to change them dynamically.
+
+In LUA:
 ```lua
-vim.wo.cursorline = true
-vim.wo.cursorcolumn = true
+vim.opt.cursorline = true
+vim.opt.cursorcolumn = true
 ```
 
-Turn on cursorline / cursorcolumn with an ex command:
+As EX command:
 ```
-:setlocal cursorline
-:setlocal cursorcolumn
+:set [no]cursorline
+:set [no]cursorcolumn
 ```
 
+<details><summary>Example keymappings</summary>
+
+Define the following keymaps or use a plugin like [unimpaired.nvim](https://github.com/Tummetott/unimpaired.nvim).
+
+```lua
+-- Enable the cursorline
+vim.keymap.set(
+    'n',
+    '[oc',
+    function() vim.opt.cursorline = true end,
+    { desc = 'Enable the cursorline' }
+)
+
+-- Disable the cursorline
+vim.keymap.set(
+    'n',
+    ']oc',
+    function() vim.opt.cursorline = false end,
+    { desc = 'Disable the cursorline' }
+)
+
+-- Use the toggle_cursorline() function for toggeling. See 'Known Issues'
+vim.keymap.set(
+    'n',
+    'yoc',
+    function() require'reticle'.toggle_cursorline() end,
+    { desc = 'Toggle the cursorline' }
+)
+
+-- Enable the cursorcolumn
+vim.keymap.set(
+    'n',
+    '[ou',
+    function() vim.opt.cursorcolumn = true end,
+    { desc = 'Enable the cursorcolumn' }
+)
+
+-- Disable the cursorcolumn
+vim.keymap.set(
+    'n',
+    ']ou',
+    function() vim.opt.cursorcolumn = false end,
+    { desc = 'Disable the cursorcolumn' }
+)
+
+-- Toggle the cursorcolumn
+vim.keymap.set(
+    'n',
+    'you',
+    function() vim.opt.cursorcolumn = not vim.opt.cursorcolumn end,
+    { desc = 'Toggle the cursorcolumn' }
+)
+```
+
+</details>
 
 ### ⚙️  Configuration
 
 The `setup()` function takes a dictionary with user configurations. If you don't
-want to customize the default behaviour, you can leave it empty
+want to customize the default behaviour, you can leave it empty.
 
 Customizing examples:
 
@@ -83,14 +160,14 @@ Customizing examples:
 require('reticle').setup {
     -- Make the cursorline and cursorcolumn follow your active window. This
     -- only works if the cursorline and cursorcolumn setting is switched on
-    -- beforehand. Default is true for both values
+    -- globaly like explained in 'Usage'. Default is true for both values
     follow = {
         cursorline = true,
         cursorcolumn = true,
     },
 
     -- Define filetypes where the cursorline / cursorcolumn is always on,
-    -- regardless of the setting
+    -- regardless of the global setting
     always = {
         cursorline = {
             'json',
@@ -99,18 +176,17 @@ require('reticle').setup {
     },
 
     -- Define filetypes where the cursorline / cursorcolumn is always on when
-    -- the window is focused, regardless of the setting
+    -- the window is focused, regardless of the global setting
     on_focus = {
         cursorline = {
             'help',
             'NvimTree',
-            'packer',
         },
         cursorcolumn = {},
     },
 
     -- Define filetypes where the cursorline / cursorcolumn is never on,
-    -- regardless of the setting
+    -- regardless of the global setting
     never = {
         cursorline = {
             'qf',
@@ -177,7 +253,7 @@ The default configuration of `reticle.nvim` looks as following:
 
 Change the `CursorLine`, `CursorColumn` and `CursorLineNr` hl-group as usual:
 
-<details><summary>With ex command:</summary>
+With EX command:
 
 ```
 -- Set color explicitly by defining a RGB value
@@ -187,9 +263,7 @@ Change the `CursorLine`, `CursorColumn` and `CursorLineNr` hl-group as usual:
 :highlight! link CursorLine Visual
 ```
 
-</details>
-
-<details><summary>With LUA command:</summary>
+Or with LUA command:
 
 ```lua
 -- Set color explicitly by defining a RGB value
@@ -202,17 +276,16 @@ vim.api.nvim_set_hl(0, 'CursorLine', { link = 'Visual' })
 vim.api.nvim_set_hl(0, 'CursorLine', { underline = true })
 ```
 
-</details>
-
-
 ### 🐛 Known Issues:
 
-- When the `always_show_cl_number = true`, it is not possible to toggle the
-  cursorline with `set cursorline!` or `set invcursorline`. Use
+- It is not possible to toggle the cursorline with `set cursorline!`, `set
+  invcursorline` or `lua vim.opt.cursorline = not vim.opt.cursorline`, when the
+  option `always_show_cl_number` is enabled. Use instead:
   ```lua
   require('reticle').toggle_cursorline()
   ```
-  instead.
+- It is important to use `set` or `lua vim.opt`. The plugin will not pick up the
+  new setting when using `setlocal` or `lua vim.opt_local`.
 
 
 ### 👯 Similar Plugins:
