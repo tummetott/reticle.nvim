@@ -285,8 +285,9 @@ vim.api.nvim_set_hl(0, 'CursorLine', { underline = true })
   ```lua
   require('reticle').toggle_cursorline()
   ```
-- It is important to use `set` or `lua vim.opt`. The plugin will not pick up the
-  new setting when using `setlocal` or `lua vim.opt_local`.
+- It is important to use `set` or `lua vim.opt` like explanied in 'Usage'. The
+  plugin will not pick up the new setting when using `setlocal` or
+  `lua vim.opt_local`.
 
 
 ### 👯 Similar Plugins:
@@ -297,8 +298,8 @@ vim.api.nvim_set_hl(0, 'CursorLine', { underline = true })
 
 ### ⚠️  Caveats:
 
-I wrote this plugin basically for myself, but then decided to share it. The
-plugin is extensively tested, but there may still be bugs in the code. Pull
-requests are welcome if you want to add more features.
+I wrote this plugin basically for myself, but then decided to share it. It is
+extensively tested, but there may still be bugs in the code. Pull requests are
+welcome if you want to add more features.
 
 x Tummetott
