@@ -5,7 +5,6 @@ local settings = nil -- We update this value once the config is parsed
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 local contains = vim.tbl_contains
-local vim_enter = true
 local enabled = { cursorline = false, cursorcolumn = false }
 
 -- This wrapper function sets a window local option for the focused window
@@ -85,18 +84,8 @@ end
 
 local on_enter = function()
     local window = vim.api.nvim_get_current_win()
-    -- When first entering vim, we must retrieve the initial cursorline and
-    -- cursorcolumn setting and init our plugin state
-    if vim_enter then
-        enabled.cursorline = vim.wo.cursorline
-        enabled.cursorcolumn = vim.wo.cursorcolumn
-        update_option_on_enter('cursorline', window)
-        update_option_on_enter('cursorcolumn', window)
-        vim_enter = false
-    else
-        deferred_update_option_on_enter('cursorline', window)
-        deferred_update_option_on_enter('cursorcolumn', window)
-    end
+    deferred_update_option_on_enter('cursorline', window)
+    deferred_update_option_on_enter('cursorcolumn', window)
 end
 
 local on_leave = function()
@@ -123,12 +112,18 @@ local on_option_change = function(state)
 end
 
 local register_autocmds = function()
+    local enter_events = { 'WinEnter', 'BufWinEnter' }
+    local leave_events = { 'WinLeave' }
+    if settings.disable_in_insert then
+        table.insert(enter_events, 'InsertLeave')
+        table.insert(leave_events, 'InsertEnter')
+    end
     local group = augroup('Reticle', { clear = true })
-    autocmd({ 'WinEnter', 'BufWinEnter' }, {
+    autocmd(enter_events, {
         callback = function() on_enter() end,
         group = group,
     })
-    autocmd('WinLeave', {
+    autocmd(leave_events, {
         callback = function() on_leave() end,
         group = group,
     })
@@ -142,6 +137,10 @@ end
 M.setup = function(user_config)
     conf.init(user_config)
     settings = conf.settings
+    -- When first entering vim, we must retrieve the initial cursorline and
+    -- cursorcolumn setting and init our plugin state
+    enabled.cursorline = vim.wo.cursorline
+    enabled.cursorcolumn = vim.wo.cursorcolumn
     register_autocmds()
 end
 

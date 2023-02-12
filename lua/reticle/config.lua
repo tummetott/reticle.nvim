@@ -5,6 +5,8 @@ local defaults = {
         cursorline = true,
         cursorcolumn = true,
     },
+    disable_in_insert = true,
+    always_show_cl_number = false,
     always = {
         cursorline = {},
         cursorcolumn = {},
@@ -24,7 +26,6 @@ local defaults = {
         cursorline = {},
         cursorcolumn = {},
     },
-    always_show_cl_number = false,
 }
 
 M.init = function(user_conf)

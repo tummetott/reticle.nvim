@@ -168,6 +168,14 @@ require('reticle').setup {
         cursorcolumn = true,
     },
 
+    -- Disable the cursorline and cursorcolumn in insert mode. Default is true
+    disable_in_insert = false
+
+    -- By default, nvim highlights the cursorline number only when the cursorline setting is
+    -- switched on. When enabeling the following setting, the cursorline number
+    -- of every window is always highlighted, regardless of the setting
+    always_show_cl_number = true,
+
     -- Define filetypes where the cursorline / cursorcolumn is always on,
     -- regardless of the global setting
     always = {
@@ -207,11 +215,6 @@ require('reticle').setup {
             'lspinfo',
         },
     },
-
-    -- By default, nvim highlights the cursorline number only when the cursorline setting is
-    -- switched on. When enabeling the following setting, the cursorline number
-    -- of every window is always highlighted, regardless of the setting
-    always_show_cl_number = true,
 }
 ```
 
@@ -226,6 +229,8 @@ The default configuration of `reticle.nvim` looks as following:
         cursorline = true,
         cursorcolumn = true,
     },
+    disable_in_insert = true,
+    always_show_cl_number = false,
     always = {
         cursorline = {},
         cursorcolumn = {},
@@ -245,7 +250,6 @@ The default configuration of `reticle.nvim` looks as following:
         cursorline = {},
         cursorcolumn = {},
     },
-    always_show_cl_number = false,
 }
 ```
 
