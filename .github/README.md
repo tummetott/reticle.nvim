@@ -293,6 +293,11 @@ vim.api.nvim_set_hl(0, 'CursorLine', { underline = true })
 - It is important to use `set` or `lua vim.opt` like explanied in 'Usage'. The
   plugin will not pick up the new setting when using `setlocal` or
   `lua vim.opt_local`.
+- Lazy loading the plugin on the `WinLeave` event works. However, this has the
+  side effect that features like `disable_in_insert` will only work as soon as
+  you left the window once. Therefore not recommended. Use the `VeryLazy` event
+  of [lazy](https://github.com/folke/lazy.nvim) instead.
+
 
 
 ### 👯 Similar Plugins:
