@@ -6,7 +6,7 @@ local defaults = {
         cursorcolumn = true,
     },
     disable_in_insert = true,
-    always_show_cl_number = false,
+    always_highlight_number = false,
     always = {
         cursorline = {},
         cursorcolumn = {},

@@ -19,7 +19,7 @@ end
 -- This function translates the semantic meaning of enabling a general option to
 -- the actual call how to enable the specific option
 local enable_option = function(window, opt, enable)
-    if opt == 'cursorline' and settings.always_show_cl_number then
+    if opt == 'cursorline' and settings.always_highlight_number then
         win_set_option(window, 'cursorlineopt', enable and 'both' or 'number')
         win_set_option(window, 'cursorline', true)
     else
