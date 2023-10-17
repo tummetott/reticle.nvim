@@ -32,11 +32,13 @@ local defaults = {
             'TelescopePrompt',
             'NvimTree',
             'Trouble',
+            'NvimSeparator',
         },
         cursorcolumn = {
             'TelescopePrompt',
             'NvimTree',
             'Trouble',
+            'NvimSeparator',
         },
     },
 }
