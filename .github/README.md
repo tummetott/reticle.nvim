@@ -6,9 +6,9 @@
 
 ### :pencil: Description:
 
-The `cursorline` setting makes it easy to locate the cursor position. However, when there are split windows, each one shows its cursorline, and there is no good indication of the currently active window.
+The `cursorline` and `cursorcolumn` settings are designed to facilitate the visual identification of the cursor's position. However, there are situations where enabling these settings is not always desirable. For instance, when multiple split windows are open, each one displays its own cursorline, creating difficulty in distinguishing the active window.
 
-This plugin avoids the clutter of multiple highlighted screen lines with split windows by disabling the `cursorline` and `cursorcolumn` settings for all but the current window. Unlike a simplistic solution with a few autocmds, this plugin still allows for exceptions like disabling the `cursorline` or `cursorcolumn` for a particular filetype or making it permanent for other filetypes. Furthermore, this plugin supports highlighting the (less intrusive) cursorline number in all split windows, while the cursorline is displayed only in the focused pane.
+This plugin provides a convenient solution for configuring the `cursorline` and `cursorcolumn` settings to meet your specific needs, granting you complete control over when they are displayed and when they are not.
 
 ### 🎥 Preview:
 
@@ -17,12 +17,12 @@ This plugin avoids the clutter of multiple highlighted screen lines with split w
 
 ### ✨ Features
 
-- 🚶 Cursorline and / or cursorcolumn follow the focused window
-- ♾️  Define filetypes that always show a cursorline and / or cursorcolumn
-- 👀 Define filetypes that always show a cursorline and / or cursorcolumn when window is focused, regardless of the cursorline setting
-- ❌ Define filetypes that never show a cursorline and / or cursorcolumn
-- 🔦 Always highlight the cursorline number of all windows, regardless of the cursorline setting
-- 💨 Written in LUA instead of vim script 
+- 🚶 Cursorline and/or cursorcolumn follow the active window.
+- ♾️  Specify filetypes that consistently display the cursorline and/or cursorcolumn.
+- 👀 Specify filetypes that always show the cursorline and/or cursorcolumn when a window is focused, regardless of the cursorline and/or cursorcolumn setting.
+- ❌ Specify filetypes that never display the cursorline and/or cursorcolumn.
+- 🔦 Always highlight the (less intrusive) cursorline number in all windows, regardless of the cursorline setting.
+- 💨 Developed in Lua instead of Vimscript.
 
 
 ### ⚡️ Requirements
@@ -32,14 +32,29 @@ This plugin avoids the clutter of multiple highlighted screen lines with split w
 
 ### 📦 Installation
 
-Install the plugin with your favourite package manager and put this code
-somewhere in your LUA configs:
+Install the plugin with your favorite package manager and place the following code somewhere in your Lua configurations:
 
 ```lua
 require('reticle').setup {
-    -- add options here if you want to overwrite defaults
+    -- add options here if you wish to override the default settings
 }
 ```
+
+Installing `reticle.nvim` with 💤 [lazy](https://github.com/folke/lazy.nvim):
+
+<details><summary>Click me</summary>
+
+```lua
+{
+    'tummetott/reticle.nvim',
+    event = 'VeryLazy', -- optionally lazy load the plugin
+    opts = {
+        -- add options here if you wish to override the default settings
+    },
+}
+```
+
+</details>
 
 Installing `reticle.nvim` with 📦 [packer](https://github.com/wbthomason/packer.nvim):
 
@@ -50,27 +65,9 @@ use {
     'tummetott/reticle.nvim',
     config = function()
         require('reticle').setup {
-            -- add options here if you want to overwrite defaults
+            -- add options here if you wish to override the default settings
         }
     end
-}
-```
-
-</details>
-
-Installing `reticle.nvim` with 💤 [lazy](https://github.com/folke/lazy.nvim):
-
-<details><summary>Click me</summary>
-
-```lua
-require('lazy').setup {
-    {
-        'tummetott/reticle.nvim',
-        event = 'VeryLazy', -- lazyload the plugin if you like
-        opts = {
-            -- add options here if you want to overwrite defaults
-        },
-    },
 }
 ```
 
@@ -79,32 +76,35 @@ require('lazy').setup {
 
 ### 🚀 Usage
 
-Change the global options `cursorline` and `cursorcolumn` to your needs in your
-lua config or define keymaps in order to change them dynamically.
+If you prefer to have your cursorline and/or cursorcolumn enabled at startup, you can adjust the `config.on_startup.cursorline` and `config.on_startup.cursorcolumn` settings. See: **Configuration**
 
-In LUA:
+To modify the cursorline and/or cursorcolumn settings while using Nvim, you can make use of the following user-exposed functions. These functions can be mapped to keybindings of your choice.
+
 ```lua
-vim.opt.cursorline = true
-vim.opt.cursorcolumn = true
-```
+require'reticle'.enable_cursorline()
+require'reticle'.disable_cursorline()
+require'reticle'.toggle_cursorline()
 
-As EX command:
-```
-:set [no]cursorline
-:set [no]cursorcolumn
+require'reticle'.enable_cursorcolumn()
+require'reticle'.disable_cursorcolumn()
+require'reticle'.toggle_cursorcolumn()
+
+-- Cursorcross combines both the cursorline and cursorcolumn
+require'reticle'.enable_cursorcross()
+require'reticle'.disable_cursorcross()
+require'reticle'.toggle_cursorcross()
 ```
 
 <details><summary>Example keymappings</summary>
 
-
-Define the following keymaps or use a plugin like [unimpaired.nvim](https://github.com/Tummetott/unimpaired.nvim).
+The following example illustrates how to create custom keymaps for the mentioned functions. Instead of manual keymap creation, you also have the option to install the [unimpaired.nvim](https://github.com/tummetott/unimpaired.nvim) plugin, which includes these keymaps by default.
 
 ```lua
 -- Enable the cursorline
 vim.keymap.set(
     'n',
     '[oc',
-    function() vim.opt.cursorline = true end,
+    function() require'reticle'.enable_cursorline() end,
     { desc = 'Enable the cursorline' }
 )
 
@@ -112,11 +112,11 @@ vim.keymap.set(
 vim.keymap.set(
     'n',
     ']oc',
-    function() vim.opt.cursorline = false end,
+    function() require'reticle'.disable_cursorline() end,
     { desc = 'Disable the cursorline' }
 )
 
--- Use the toggle_cursorline() function for toggeling. See 'Known Issues'
+-- Toggle the cursorline
 vim.keymap.set(
     'n',
     'yoc',
@@ -124,69 +124,66 @@ vim.keymap.set(
     { desc = 'Toggle the cursorline' }
 )
 
--- Enable the cursorcolumn
-vim.keymap.set(
-    'n',
-    '[ou',
-    function() vim.opt.cursorcolumn = true end,
-    { desc = 'Enable the cursorcolumn' }
-)
-
--- Disable the cursorcolumn
-vim.keymap.set(
-    'n',
-    ']ou',
-    function() vim.opt.cursorcolumn = false end,
-    { desc = 'Disable the cursorcolumn' }
-)
-
--- Toggle the cursorcolumn
-vim.keymap.set(
-    'n',
-    'you',
-    function() vim.opt.cursorcolumn = not vim.opt.cursorcolumn end,
-    { desc = 'Toggle the cursorcolumn' }
-)
+-- and so forth ...
 ```
 
 </details>
 
+Alongside the previously mentioned functions, this plugin also provides user commands to toggle the cursorline, cursorcolumn, and cursorcross.
+
+```
+:ReticleToggleCursorline
+:ReticleToggleCursorcolumn
+:ReticleToggleCursorcross
+```
+
+**Note**: The plugin does not automatically detect changes made to cursorline or cursorcolumn directly. Commands such as `vim.opt.cursorline = true`, `:set cursorline`, or `vim.api.nvim_win_set_option(0, 'cursorline', true)` will alter the cursorline temporarily, but the plugin will override these settings upon the following events: `WinEnter`, `WinLeave`, `BufWinEnter`, `InsertEnter`, and `InsertLeave`. Please use the above-mentioned user functions or user commands instead.
+
 ### ⚙️  Configuration
 
-The `setup()` function takes a dictionary with user configurations. If you don't
-want to customize the default behaviour, you can leave it empty.
+The `setup()` function takes a `config` dictionary with user configurations. User configurations are merged with the default settings where possible. In the event of a collision, user values take precedence and overwrite the default settings. If you prefer not to customize the default behavior, you can call the function without arguments.
+
 
 Customizing examples:
 
 ```lua
 require('reticle').setup {
-    -- Make the cursorline and cursorcolumn follow your active window. This
-    -- only works if the cursorline and cursorcolumn setting is switched on
-    -- globaly like explained in 'Usage'. Default is true for both values
+    -- Enable/Disable the cursorline and/or cursorcolumn at startup
+    -- Default: false for both values
+    on_startup {
+        cursorline = false,
+        cursorcolumn = false,
+    },
+
+    -- Disable the cursorline and cursorcolumn in insert mode
+    -- Default: true
+    disable_in_insert = true,
+
+    -- By default, nvim highlights the cursorline number only when the
+    -- cursorline setting is active. Enabling this setting ensures that the
+    -- cursorline number in every window is always highlighted, regardless of the
+    -- cursorline setting.
+    -- Default: false
+    always_highlight_number = true,
+
+    -- Cursorline and/or cursorcolumn are set to be displayed exclusively in the active window,
+    -- thus following your active window. This setting is overruled by the following settings
+    -- concerning special filetypes.
+    -- Default: true for both values
     follow = {
         cursorline = true,
         cursorcolumn = true,
     },
 
-    -- Disable the cursorline and cursorcolumn in insert mode. Default is true
-    disable_in_insert = false,
-
-    -- By default, nvim highlights the cursorline number only when the cursorline setting is
-    -- switched on. When enabling the following setting, the cursorline number
-    -- of every window is always highlighted, regardless of the setting
-    always_highlight_number = true,
-
-    -- Define filetypes where the cursorline / cursorcolumn is always on,
-    -- regardless of the global setting
+    -- Specify filetypes where the cursorline and/or cursorcolumn are always
+    -- enabled, regardless of the global setting.
     always = {
-        cursorline = {
-            'json',
-        },
+        cursorline = {},
         cursorcolumn = {},
     },
 
-    -- Define filetypes where the cursorline / cursorcolumn is always on when
-    -- the window is focused, regardless of the global setting
+    -- Specify filetypes where the cursorline and/or cursorcolumn are always
+    -- enabled when the window is focused, regardless of the global setting.
     on_focus = {
         cursorline = {
             'help',
@@ -195,8 +192,8 @@ require('reticle').setup {
         cursorcolumn = {},
     },
 
-    -- Define filetypes where the cursorline / cursorcolumn is never on,
-    -- regardless of the global setting
+    -- Specify filetypes where the cursorline and/or cursorcolumn are never
+    -- enabled, regardless of the global setting.
     never = {
         cursorline = {
             'qf',
@@ -218,87 +215,26 @@ require('reticle').setup {
 }
 ```
 
-#### Default Configuration
-The default configuration of `reticle.nvim` looks as following:
-
-<details><summary>Default config</summary>
-
-```lua
-{
-    follow = {
-        cursorline = true,
-        cursorcolumn = true,
-    },
-    disable_in_insert = true,
-    always_highlight_number = false,
-    always = {
-        cursorline = {},
-        cursorcolumn = {},
-    },
-    on_focus = {
-        cursorline = {},
-        cursorcolumn = {},
-    },
-    never = {
-        cursorline = {
-            'TelescopePrompt',
-            'DressingInput',
-        },
-        cursorcolumn = {},
-    },
-    ignore = {
-        cursorline = {},
-        cursorcolumn = {},
-    },
-}
-```
-
-</details>
+The **default** configuration can be found in in the file `/lua/reticle/config.lua`.
 
 #### Change highlight groups
 
-Change the `CursorLine`, `CursorColumn` and `CursorLineNr` hl-group as usual:
-
-With EX command:
-
-```
--- Set color explicitly by defining a RGB value
-:highlight CursorLine guibg=#3C3836
-
--- Link to other hl-group
-:highlight! link CursorLine Visual
-```
-
-Or with LUA command:
+This plugin does not alter the highlight groups for the cursorline and/or cursorcolumn. You can customize these groups as you typically would. Here are a few examples of how to modify them:
 
 ```lua
--- Set color explicitly by defining a RGB value
-vim.api.nvim_set_hl(0, 'CursorLineNr', { fg = '#FFFFFF' })
-
--- Link to other hl-group
-vim.api.nvim_set_hl(0, 'CursorLine', { link = 'Visual' })
-
 -- Underline the cursorline
 vim.api.nvim_set_hl(0, 'CursorLine', { underline = true })
+
+-- Link to other hl-group
+vim.api.nvim_set_hl(0, 'CursorColumn', { link = 'Visual' })
+
+-- Set color explicitly by defining a RGB value
+vim.api.nvim_set_hl(0, 'CursorLineNr', { bg = '#FFFFFF' })
 ```
 
 ### 🐛 Known Issues:
 
-- It is not possible to toggle the cursorline with `set cursorline!`, `set
-  invcursorline` or `lua vim.opt.cursorline = not vim.opt.cursorline`, when the
-  option `always_show_cl_number` is enabled. Use instead:
-  ```lua
-  require('reticle').toggle_cursorline()
-  ```
-- It is important to use `set` or `lua vim.opt` like explanied in 'Usage'. The
-  plugin will not pick up the new setting when using `setlocal` or
-  `lua vim.opt_local`.
-- Lazy loading the plugin on the `WinLeave` event works. However, this has the
-  side effect that features like `disable_in_insert` will only work as soon as
-  you left the window once. Therefore not recommended. Use the `VeryLazy` event
-  of [lazy](https://github.com/folke/lazy.nvim) instead.
-
-
+- This plugin does not work with [vim-unimpaired](https://github.com/tpope/vim-unimpaired). Use [unimpaired.nivm](https://github.com/tummetott/unimpaired.nvim) instead.
 
 ### 👯 Similar Plugins:
 
@@ -306,10 +242,4 @@ vim.api.nvim_set_hl(0, 'CursorLine', { underline = true })
 - [vim-crosshair](https://github.com/bronson/vim-crosshairs)
 
 
-### ⚠️  Caveats:
-
-I wrote this plugin basically for myself, but then decided to share it. It is
-extensively tested, but there may still be bugs in the code. Pull requests are
-welcome if you want to add more features.
-
-x Tummetott
+❤️ Tummetott

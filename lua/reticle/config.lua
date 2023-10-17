@@ -1,12 +1,16 @@
 local M = {}
 
 local defaults = {
+    on_startup = {
+        cursorline = false,
+        cursorcolumn = false,
+    },
+    disable_in_insert = true,
+    always_highlight_number = false,
     follow = {
         cursorline = true,
         cursorcolumn = true,
     },
-    disable_in_insert = true,
-    always_highlight_number = false,
     always = {
         cursorline = {},
         cursorcolumn = {},
@@ -17,20 +21,29 @@ local defaults = {
     },
     never = {
         cursorline = {
-            'TelescopePrompt',
             'DressingInput',
         },
-        cursorcolumn = {},
+        cursorcolumn = {
+            'DressingInput',
+        },
     },
     ignore = {
-        cursorline = {},
-        cursorcolumn = {},
+        cursorline = {
+            'TelescopePrompt',
+            'NvimTree',
+            'Trouble',
+        },
+        cursorcolumn = {
+            'TelescopePrompt',
+            'NvimTree',
+            'Trouble',
+        },
     },
 }
 
-M.init = function(user_conf)
+M.get_settings = function(user_conf)
     user_conf = user_conf or {}
-    M.settings = vim.tbl_deep_extend('force', defaults, user_conf)
+    return vim.tbl_deep_extend('force', defaults, user_conf)
 end
 
 return M
