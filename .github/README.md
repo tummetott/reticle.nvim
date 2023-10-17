@@ -144,32 +144,26 @@ Alongside the previously mentioned functions, this plugin also provides user com
 The `setup()` function takes a `config` dictionary with user configurations. User configurations are merged with the default settings where possible. In the event of a collision, user values take precedence and overwrite the default settings. If you prefer not to customize the default behavior, you can call the function without arguments.
 
 
-Customizing examples:
-
 ```lua
 require('reticle').setup {
     -- Enable/Disable the cursorline and/or cursorcolumn at startup
-    -- Default: false for both values
     on_startup {
         cursorline = false,
         cursorcolumn = false,
     },
 
     -- Disable the cursorline and cursorcolumn in insert mode
-    -- Default: true
     disable_in_insert = true,
 
     -- By default, nvim highlights the cursorline number only when the
     -- cursorline setting is active. Enabling this setting ensures that the
     -- cursorline number in every window is always highlighted, regardless of the
     -- cursorline setting.
-    -- Default: false
     always_highlight_number = true,
 
     -- Cursorline and/or cursorcolumn are set to be displayed exclusively in the active window,
     -- thus following your active window. This setting is overruled by the following settings
     -- concerning special filetypes.
-    -- Default: true for both values
     follow = {
         cursorline = true,
         cursorcolumn = true,
