@@ -76,7 +76,7 @@ use {
 
 ### 🚀 Usage
 
-If you prefer to have your cursorline and/or cursorcolumn enabled at startup, you can adjust the `config.on_startup.cursorline` and `config.on_startup.cursorcolumn` settings. See: **Configuration**
+If you prefer to have your cursorline and/or cursorcolumn enabled at startup, you can adjust the `opts.on_startup` setting. See: **Configuration**
 
 To modify the cursorline and/or cursorcolumn settings while using Nvim, you can make use of the following user-exposed functions. These functions can be mapped to keybindings of your choice.
 
@@ -141,7 +141,7 @@ Alongside the previously mentioned functions, this plugin also provides user com
 
 ### ⚙️  Configuration
 
-The `setup()` function takes a `config` dictionary with user configurations. User configurations are merged with the default settings where possible. In the event of a collision, user values take precedence and overwrite the default settings. If you prefer not to customize the default behavior, you can call the function without arguments.
+The `setup()` function takes a `opts` dictionary with user configurations. User options are merged with the default options where possible. In the event of a collision, user values take precedence and overwrite the default options. If you prefer not to customize the default behavior, you can call the function without arguments.
 
 
 ```lua
