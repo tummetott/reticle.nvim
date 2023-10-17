@@ -1,0 +1,251 @@
+*reticle.nvim*  Plugin for customized cursorline and cursorcolumn settings
+
+
+Author: Tummetott
+
+==============================================================================
+CONTENTS                                                      *reticle-contents*
+
+1. DESCRIPTION..........................................|reticle.description|
+2. REQUIREMENTS.........................................|reticle.requirements|
+3. USAGE................................................|reticle.usage|
+4. COMMANDS.............................................|reticle.commands|
+5. CONFIGURATION........................................|reticle.configuration|
+6. HIGHLIGHTS...........................................|reticle.highlights|
+
+==============================================================================
+1. DESCRIPTION                                             *reticle.description*
+
+|reticle.nvim| is a plugin designed to provide you with granular control over
+the `cursorline` and `cursorcolumn` settings in Neovim. These settings are
+typically used to visually identify the cursor's position in the code. However,
+enabling them in certain scenarios, such as multiple split windows, can create
+clutter and confusion. |reticle.nvim| addresses this issue by allowing you to
+configure these settings according to your specific requirements, granting you
+complete control over when they are displayed and when they are not.
+
+2. REQUIREMENTS                                           *reticle.requirements*
+
+|reticle.nvim| requires Neovim 0.5 or higher.
+
+3. USAGE                                                         *reticle.usage*
+
+If you want to enable the `cursorline` and/or `cursorcolumn` at startup, adjust
+the |reticle.opts.on_startup| setting.
+
+To modify the cursorline and/or cursorcolumn settings during Neovim usage, use
+the provided user commands and functions.
+
+`Note`: This plugin does not automatically detect direct changes made to the
+cursorline or cursorcolumn settings. Commands such as:
+>lua
+    vim.opt.cursorline = true
+< >vim
+    :set cursorline
+< >lua
+    vim.api.nvim_win_set_option(0, 'cursorline', true)
+<
+will alter the cursorline temporarily, but the plugin will override these
+settings upon the following events:
+
+    - |WinEnter|
+    - |WinLeave|
+    - |BufWinEnter|
+    - |InsertEnter|
+    - |InsertLeave|
+
+Please use the provided commands and functions to modify the cursorline and
+cursorcolumn settings.
+
+4. COMMANDS                                                   *reticle.commands*
+
+|reticle.nvim| provides the following user commands to toggle the `cursorline`
+and `cursorcolumn` settings:
+
+:ReticleToggleCursorline                              *:ReticleToggleCursorline*
+        
+        Toggle the cursorline for the local window.
+
+:ReticleToggleCursorcolumn                          *:ReticleToggleCursorcolumn*
+
+        Toggle the cursorcolumn for the local window.
+
+:ReticleToggleCursorcross                            *:ReticleToggleCursorcross*
+
+        Toggle both the cursorline and cursorcolumn for the local window.
+
+5. FUNCTIONS                                                 *reticle.functions*
+
+setup(opts)                                                    *reticle.setup()*
+
+        Setup the plugin with the provided configurations. User configurations
+        are merged with the default options where possible. In the event of a
+        collision, user values take precedence and overwrite the default
+        options. If you prefer not to customize the default behavior, you can
+        call the function without argument. Calling this function in mandatory
+        in order to use the plugin.
+
+enable_cursorline()                                *reticle.enable_cursorline()*
+
+        Enable the cursorline for the local window.
+
+disable_cursorline()                              *reticle.disable_cursorline()*
+
+        Disable the cursorline for the local window.
+
+toggle_cursorline()                                *reticle.toggle_cursorline()*
+
+        Toggle the cursorline for the local window.
+
+has_cursorline()                                      *reticle.has_cursorline()*
+
+        Return true if the cursorline is enabled for the local window.
+
+enable_cursorcolumn()                            *reticle.enable_cursorcolumn()*
+
+        Enable the cursorcolumn for the local window.
+
+disable_cursorcolumn()                          *reticle.disable_cursorcolumn()*
+
+        Disable the cursorcolumn for the local window.
+
+toggle_cursorcolumn()                            *reticle.toggle_cursorcolumn()*
+
+        Toggle the cursorcolumn for the local window.
+
+has_cursorcolumn()                                  *reticle.has_cursorcolumn()*
+
+        Return true if the cursorcolumn is enabled for the local window.
+
+enable_cursorcross()                              *reticle.enable_cursorcross()*
+
+        Enable both the cursorline and cursorcolumn for the local window.
+
+disable_cursorcross()                            *reticle.disable_cursorcross()*
+
+        Disable both the cursorline and cursorcolumn for the local window.
+
+toggle_cursorcross()                              *reticle.toggle_cursorcross()*
+
+        Toggle both the cursorline and cursorcolumn for the local window.
+
+has_cursorcross()                                    *reticle.has_cursorcross()*
+
+        Return true if both the cursorline and cursorcolumn are enabled for
+        the local window.
+
+
+5. CONFIGURATION                                         *reticle.configuration*
+                                                        
+
+                                                                  *reticle.opts*
+|reticle.nvim| provides the following configuration options which can be
+passed to the |reticle.setup()| function. 
+
+
+on_startup                                             *reticle.opts.on_startup*
+            Type: `table` ~
+            Fields: `cursorline`, `cursorcolumn` ~
+            Default: ~
+>lua
+                { cursorline = false, cursorcolumn = false }
+<
+            The cursorline and cursorcolumn settings when Neovim starts up.
+
+disable_in_insert                               *reticle.opts.disable_in_insert*
+            Type: `boolean` ~
+            Default: `true` ~
+
+            Don't show the cursorline and cursorcolumn when in insert mode.
+
+always_highlight_number                   *reticle.opts.always_highlight_number*
+            Type: `boolean` ~
+            Default: `false` ~
+
+            By default, nvim highlights the cursorline number only when the
+            cursorline setting is active. Enabling this setting ensures that
+            the (less intrusive) cursorline number in every window is always
+            highlighted, regardless of the cursorline setting. See
+            |CursorLineNr| for more information.
+
+follow                                                     *reticle.opts.follow*
+            Type: `table` ~
+            Fields: `cursorline`, `cursorcolumn` ~
+            Default: ~
+>lua
+                { cursorline = true, cursorcolumn = true }
+<
+            Cursorline and/or cursorcolumn are set to be displayed exclusively
+            in the active window, thus following your active window. This
+            setting is overruled by the following settings concerning special
+            filetypes.
+
+always                                                     *reticle.opts.always*
+            Type: `table` ~
+            Fields: `cursorline`, `cursorcolumn` ~
+            Default: ~
+>lua
+                { cursorline = {}, cursorcolumn = {} }
+<
+            Specify filetypes where the cursorline and/or cursorcolumn are
+            always enabled, regardless of the global setting.
+
+on_focus                                                 *reticle.opts.on_focus*
+            Type: `table` ~
+            Fields: `cursorline`, `cursorcolumn` ~
+            Default: ~
+>lua
+                { cursorline = {}, cursorcolumn = {} }
+<
+            Specify filetypes where the cursorline and/or cursorcolumn are
+            enabled when the window is focused, regardless of the global
+            setting.
+
+never                                                       *reticle.opts.never*
+            Type: `table` ~
+            Fields: `cursorline`, `cursorcolumn` ~
+            Default: ~
+>lua
+                {
+                    cursorline = { 'DressingInput' },
+                    cursorcolumn = { 'DressingInput' },
+                }
+<
+            Specify filetypes where the cursorline and/or cursorcolumn are
+            never enabled, regardless of the global setting.
+
+ignore                                                     *reticle.opts.ignore*
+            Type: `table` ~
+            Fields: `cursorline`, `cursorcolumn` ~
+            Default: ~
+>lua
+                {
+                    cursorline = {
+                        'TelescopePrompt',
+                        'NvimTree',
+                        'Trouble',
+                        'NvimSeparator',
+                    },
+                    cursorcolumn = {
+                        'TelescopePrompt',
+                        'NvimTree',
+                        'Trouble',
+                        'NvimSeparator',
+                    },
+                }
+<
+            Define filetypes which are ignored by the plugin
+
+
+6. HIGHLIGHTS                                               *reticle.highlights*
+
+This plugin does not modify the highlight groups for the cursorline and/or
+cursorcolumn. You can customize these groups as you would normally. The
+relevant highlight groups include:
+
+- `hl-Cursorline`
+- `hl-CursorColumn`
+- `hl-CursorLineNr`
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:

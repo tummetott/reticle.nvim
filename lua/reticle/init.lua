@@ -140,7 +140,7 @@ M.toggle_cursorline = function()
     on_enter('cursorline', window)
 end
 
-M.is_cursorline = function()
+M.has_cursorline = function()
     return enabled.cursorline
 end
 
@@ -162,7 +162,7 @@ M.toggle_cursorcolumn = function()
     on_enter('cursorcolumn', window)
 end
 
-M.is_cursorcolumn = function()
+M.has_cursorcolumn = function()
     return enabled.cursorcolumn
 end
 
@@ -184,7 +184,7 @@ M.toggle_cursorcross = function()
     end
 end
 
-M.is_cursorcross = function()
+M.has_cursorcross = function()
     return enabled.cursorline and enabled.cursorcolumn
 end
 
