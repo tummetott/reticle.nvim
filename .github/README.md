@@ -213,7 +213,10 @@ require('reticle').setup {
 }
 ```
 
-The **default** configuration can be found in in the file `/lua/reticle/config.lua`.
+The **default** configuration is documented in the reticle help page.
+```vim
+:help reticle.opts
+```
 
 #### Change highlight groups
 
