@@ -1,5 +1,8 @@
 local M = {}
 
+require 'reticle.types'
+
+--- @type ReticleOpts
 local defaults = {
     on_startup = {
         cursorline = false,
@@ -43,6 +46,8 @@ local defaults = {
     },
 }
 
+---@param user_conf? ReticleUserOpts
+---@return ReticleOpts
 M.get_settings = function(user_conf)
     user_conf = user_conf or {}
     return vim.tbl_deep_extend('force', defaults, user_conf)

@@ -109,12 +109,15 @@ local create_usercommands = function()
     create_cmd('ReticleToggleCursorcross', function() M.toggle_cursorcross() end, {})
 end
 
+---@param user_config? ReticleUserOpts
 M.setup = function(user_config)
+    -- Parse config and init plugin state
     settings = conf.get_settings(user_config)
-    enabled.cursorline = settings.on_startup.cursorline
-    enabled.cursorcolumn = settings.on_startup.cursorcolumn
     register_autocmds()
     create_usercommands()
+    enabled.cursorline = settings.on_startup.cursorline
+    enabled.cursorcolumn = settings.on_startup.cursorcolumn
+    -- Show cursorline and/or cursorcolumn on startup
     local window = vim.api.nvim_get_current_win()
     on_enter('cursorline', window)
     on_enter('cursorcolumn', window)
