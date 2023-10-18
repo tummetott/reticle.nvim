@@ -1,5 +1,6 @@
 local M = {}
 
+require 'reticle.types'
 local conf = require('reticle.config')
 local settings = nil -- This value is updated once the config is loaded
 local enabled = { cursorline = false, cursorcolumn = false }
@@ -109,7 +110,7 @@ local create_usercommands = function()
     create_cmd('ReticleToggleCursorcross', function() M.toggle_cursorcross() end, {})
 end
 
----@param user_config? ReticleUserOpts
+---@param user_config? reticle.opts
 M.setup = function(user_config)
     -- Parse config and init plugin state
     settings = conf.get_settings(user_config)
