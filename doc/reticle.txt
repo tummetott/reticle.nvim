@@ -18,11 +18,12 @@ CONTENTS                                                      *reticle-contents*
 
 |reticle.nvim| is a plugin designed to provide you with granular control over
 the `cursorline` and `cursorcolumn` settings in Neovim. These settings are
-typically used to visually identify the cursor's position in the code. However,
-enabling them in certain scenarios, such as multiple split windows, can create
-clutter and confusion. |reticle.nvim| addresses this issue by allowing you to
-configure these settings according to your specific requirements, granting you
-complete control over when they are displayed and when they are not.
+typically used to visually identify the cursor's position in the code.
+However, enabling them in certain scenarios, such as multiple split windows,
+can create clutter and confusion. |reticle.nvim| addresses this issue by
+allowing you to configure these settings according to your specific
+requirements, granting you complete control over when they are displayed and
+when they are not.
 
 2. REQUIREMENTS                                           *reticle.requirements*
 
@@ -34,7 +35,7 @@ If you want to enable the `cursorline` and/or `cursorcolumn` at startup, adjust
 the |reticle.opts.on_startup| setting.
 
 To modify the cursorline and/or cursorcolumn settings during Neovim usage, use
-the provided user commands and functions.
+the provided |reticle.commands| and |reticle.functions|.
 
 `Note`: This plugin does not automatically detect direct changes made to the
 cursorline or cursorcolumn settings. Commands such as:
@@ -53,9 +54,6 @@ settings upon the following events:
     - |BufWinEnter|
     - |InsertEnter|
     - |InsertLeave|
-
-Please use the provided commands and functions to modify the cursorline and
-cursorcolumn settings.
 
 4. COMMANDS                                                   *reticle.commands*
 
