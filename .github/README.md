@@ -148,7 +148,7 @@ The `setup()` function takes a `opts` dictionary with user configurations. User 
 require('reticle').setup {
     -- Enable/Disable the cursorline and/or cursorcolumn at startup
     -- Default: false for both values
-    on_startup {
+    on_startup = {
         cursorline = false,
         cursorcolumn = false,
     },
