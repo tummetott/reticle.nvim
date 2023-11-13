@@ -30,6 +30,11 @@ local on_enter = function(opt, window)
     local buffer = vim.api.nvim_win_get_buf(window)
     local ft = vim.api.nvim_buf_get_option(buffer, 'filetype')
     if contains(settings.ignore[opt], ft) then
+        -- TODO: make PR in trouble.nvim. cursorlineopt should be set to 'both'
+        -- when cursorline is enabled in trouble windows.
+        if ft == 'Trouble' and opt == 'cursorline' then
+            vim.api.nvim_win_set_option(window, 'cursorlineopt', 'both')
+        end
         return
     elseif contains(settings.never[opt], ft) then
         change_option(window, opt, false)
