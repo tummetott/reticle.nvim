@@ -16,7 +16,7 @@ local create_cmd = vim.api.nvim_create_user_command
 -- meaning of setting the cursorline to the actuall nvim api call.
 local set_win_option = function(opt, enable, win)
     if opt == 'cursorline' and settings.always_highlight_number then
-        vim.api.nvim_set_option_value('cursorlineopt', enable and 'both' or 'number', { win = win } )
+        vim.api.nvim_set_option_value('cursorlineopt', enable and 'both' or 'number', { win = win })
         vim.api.nvim_set_option_value('cursorline', true, { win = win })
     else
         vim.api.nvim_set_option_value(opt, enable, { win = win })
@@ -55,7 +55,7 @@ local on_enter = function(opt, win)
         enable = true
     elseif contains(settings.never[opt], ft) then
         enable = false
-    elseif contains(settings.on_focus[opt], ft)  then
+    elseif contains(settings.on_focus[opt], ft) then
         enable = true
     elseif settings.follow[opt] then
         enable = enabled[opt]
@@ -106,6 +106,20 @@ local deferred_on_leave = function(opt, win)
     end)
 end
 
+-- Initialize the cursorline / cursorcolumn on each window on startup.
+local initialize_windows = function()
+    local cur_win = vim.api.nvim_get_current_win()
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+        if win == cur_win then
+            on_enter('cursorline', win)
+            on_enter('cursorcolumn', win)
+        else
+            on_leave('cursorline', win)
+            on_leave('cursorcolumn', win)
+        end
+    end
+end
+
 local register_autocmds = function()
     local enter_events = { 'WinEnter', 'BufWinEnter' }
     local leave_events = { 'WinLeave' }
@@ -130,21 +144,23 @@ local register_autocmds = function()
         end,
         group = group,
     })
+    autocmd('VimEnter', {
+        callback = function()
+            -- We call the init function on VimEnter to guarantee that windows
+            -- are already created, particularly when the plugin is loaded
+            -- directly during Vim startup.
+            vim.schedule(function()
+                initialize_windows()
+            end)
+        end,
+        group = group,
+    })
 end
 
 local create_usercommands = function()
     create_cmd('ReticleToggleCursorline', function() M.toggle_cursorline() end, {})
     create_cmd('ReticleToggleCursorcolumn', function() M.toggle_cursorcolumn() end, {})
     create_cmd('ReticleToggleCursorcross', function() M.toggle_cursorcross() end, {})
-end
-
--- When opening a neovim split window from the terminal (e.g. -O or -d option),
--- the cursorline / cursorcolumn must be updated in each window.
-local update_split_windows = function()
-    for _, win in ipairs(vim.api.nvim_list_wins()) do
-        on_leave('cursorline', win)
-        on_leave('cursorcolumn', win)
-    end
 end
 
 ---@param user_config? reticle.opts
@@ -155,11 +171,10 @@ M.setup = function(user_config)
     enabled.cursorcolumn = settings.on_startup.cursorcolumn
     register_autocmds()
     create_usercommands()
-    update_split_windows()
-    -- Show cursorline and/or cursorcolumn on startup
-    local win = vim.api.nvim_get_current_win()
-    on_enter('cursorline', win)
-    on_enter('cursorcolumn', win)
+    -- We must call the init function again here, because the user might
+    -- lazyload the plugin on the VeryLazy event (which is fired after
+    -- VimEnter).
+    initialize_windows()
 end
 
 -- UTILITY FUNCTIONS
