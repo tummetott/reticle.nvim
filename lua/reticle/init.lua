@@ -1,8 +1,9 @@
 local M = {}
 
 require 'reticle.types'
-local conf = require('reticle.config')
+--- @type reticle.opts_internal
 local settings = nil -- This value is updated once the config is loaded
+local conf = require('reticle.config')
 local enabled = { cursorline = false, cursorcolumn = false }
 
 -- Short aliases
