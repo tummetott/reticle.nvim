@@ -10,18 +10,27 @@ local enabled = { cursorline = false, cursorcolumn = false }
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 local contains = vim.tbl_contains
-local set_option = vim.api.nvim_set_option_value
-local get_option = vim.api.nvim_get_option_value
 local create_cmd = vim.api.nvim_create_user_command
 
--- This function translates the semantic meaning of changing a window local
--- option to the actual vim command.
-local change_option = function(win, opt, enable)
+-- Wrapper function that sets an window local option. It translates the semantic
+-- meaning of setting the cursorline to the actuall nvim api call.
+local set_win_option = function(opt, enable, win)
     if opt == 'cursorline' and settings.always_highlight_number then
-        set_option('cursorlineopt', enable and 'both' or 'number', { win = win } )
-        set_option('cursorline', true, { win = win })
+        vim.api.nvim_set_option_value('cursorlineopt', enable and 'both' or 'number', { win = win } )
+        vim.api.nvim_set_option_value('cursorline', true, { win = win })
     else
-        set_option(opt, enable, { win = win })
+        vim.api.nvim_set_option_value(opt, enable, { win = win })
+    end
+end
+
+-- Wrapper function that gets a nvim option. It considers the special case of
+-- always highlighting the number column.
+local get_option = function(name, opts)
+    if name == 'cursorline' and settings.always_highlight_number then
+        local clo = vim.api.nvim_get_option_value('cursorlineopt', opts)
+        return clo == 'both'
+    else
+        return vim.api.nvim_get_option_value(name, opts)
     end
 end
 
@@ -35,16 +44,16 @@ local on_enter = function(opt, win)
         -- TODO: make PR in trouble.nvim. cursorlineopt should be set to 'both'
         -- when cursorline is enabled in trouble windows.
         if ft == 'Trouble' and opt == 'cursorline' then
-            set_option('cursorlineopt', 'both', { win = win })
+            vim.api.nvim_set_option_value('cursorlineopt', 'both', { win = win })
         end
         return
     elseif contains(settings.never[opt], ft) then
-        change_option(win, opt, false)
+        set_win_option(opt, false, win)
     elseif contains(settings.on_focus[opt], ft) or
         contains(settings.always[opt], ft) then
-        change_option(win, opt, true)
+        set_win_option(opt, true, win)
     elseif settings.follow[opt] then
-        change_option(win, opt, enabled[opt])
+        set_win_option(opt, enabled[opt], win)
     end
 end
 
@@ -57,11 +66,11 @@ local on_leave = function(opt, win)
     if contains(settings.ignore[opt], ft) then
         return
     elseif contains(settings.always[opt], ft) then
-        change_option(win, opt, true)
+        set_win_option(opt, true, win)
     elseif contains(settings.never[opt], ft) or
         contains(settings.on_focus[opt], ft) or
         settings.follow[opt] then
-        change_option(win, opt, false)
+        set_win_option(opt, false, win)
     end
 end
 
@@ -138,14 +147,14 @@ end
 M.set_cursorline = function(enable)
     local win = vim.api.nvim_get_current_win()
     enabled.cursorline = enable
-    on_enter('cursorline', win)
+    set_win_option('cursorline', enabled.cursorline, win)
 end
 
 --- Toggle the cursorline
 M.toggle_cursorline = function()
     local win = vim.api.nvim_get_current_win()
-    enabled.cursorline = not enabled.cursorline
-    on_enter('cursorline', win)
+    enabled.cursorline = not get_option('cursorline', { win = win })
+    set_win_option('cursorline', enabled.cursorline, win)
 end
 
 --- Checks if the cursor line is enabled.
@@ -159,14 +168,14 @@ end
 M.set_cursorcolumn = function(enable)
     local win = vim.api.nvim_get_current_win()
     enabled.cursorcolumn = enable
-    on_enter('cursorcolumn', win)
+    set_win_option('cursorcolumn', enabled.cursorcolumn, win)
 end
 
 --- Toggle the cursorcolumn
 M.toggle_cursorcolumn = function()
     local win = vim.api.nvim_get_current_win()
-    enabled.cursorcolumn = not enabled.cursorcolumn
-    on_enter('cursorcolumn', win)
+    enabled.cursorcolumn = not get_option('cursorcolumn', { win = win })
+    set_win_option('cursorcolumn', enabled.cursorcolumn, win)
 end
 
 --- Checks if the cursor column is enabled.
@@ -184,7 +193,8 @@ end
 
 --- Toggle the cursorcross
 M.toggle_cursorcross = function()
-    if enabled.cursorcolumn then
+    local win = vim.api.nvim_get_current_win()
+    if get_option('cursorcolumn', { win = win }) then
         M.set_cursorcross(false)
     else
         M.set_cursorcross(true)
