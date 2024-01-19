@@ -133,68 +133,66 @@ end
 
 -- UTILITY FUNCTIONS
 
-M.enable_cursorline = function()
+--- Enables or disables the cursorline based on the provided boolean value.
+---@param enable boolean
+M.set_cursorline = function(enable)
     local win = vim.api.nvim_get_current_win()
-    enabled.cursorline = true
+    enabled.cursorline = enable
     on_enter('cursorline', win)
 end
 
-M.disable_cursorline = function()
-    local win = vim.api.nvim_get_current_win()
-    enabled.cursorline = false
-    on_enter('cursorline', win)
-end
-
+--- Toggle the cursorline
 M.toggle_cursorline = function()
     local win = vim.api.nvim_get_current_win()
     enabled.cursorline = not enabled.cursorline
     on_enter('cursorline', win)
 end
 
+--- Checks if the cursor line is enabled.
+---@return boolean: true if the cursorline is enabled, false otherwise.
 M.has_cursorline = function()
     return enabled.cursorline
 end
 
-M.enable_cursorcolumn = function()
+--- Enables or disables the cursorcolumn based on the provided boolean value.
+--- @param enable boolean
+M.set_cursorcolumn = function(enable)
     local win = vim.api.nvim_get_current_win()
-    enabled.cursorcolumn = true
+    enabled.cursorcolumn = enable
     on_enter('cursorcolumn', win)
 end
 
-M.disable_cursorcolumn = function()
-    local win = vim.api.nvim_get_current_win()
-    enabled.cursorcolumn = false
-    on_enter('cursorcolumn', win)
-end
-
+--- Toggle the cursorcolumn
 M.toggle_cursorcolumn = function()
     local win = vim.api.nvim_get_current_win()
     enabled.cursorcolumn = not enabled.cursorcolumn
     on_enter('cursorcolumn', win)
 end
 
+--- Checks if the cursor column is enabled.
+--- @return boolean: true if the cursorcolumn is enabled, false otherwise.
 M.has_cursorcolumn = function()
     return enabled.cursorcolumn
 end
 
-M.enable_cursorcross = function()
-    M.enable_cursorline()
-    M.enable_cursorcolumn()
+--- Enables or disables the cursorcross based on the provided boolean value.
+--- @param enable boolean
+M.set_cursorcross = function(enable)
+    M.set_cursorline(enable)
+    M.set_cursorcolumn(enable)
 end
 
-M.disable_cursorcross = function()
-    M.disable_cursorline()
-    M.disable_cursorcolumn()
-end
-
+--- Toggle the cursorcross
 M.toggle_cursorcross = function()
     if enabled.cursorcolumn then
-        M.disable_cursorcross()
+        M.set_cursorcross(false)
     else
-        M.enable_cursorcross()
+        M.set_cursorcross(true)
     end
 end
 
+--- Checks if the cursorcross is enabled.
+--- @return boolean: true if the cursorcross is enabled, false otherwise.
 M.has_cursorcross = function()
     return enabled.cursorline and enabled.cursorcolumn
 end

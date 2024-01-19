@@ -78,20 +78,17 @@ use {
 
 If you prefer to have your cursorline and/or cursorcolumn enabled at startup, you can adjust the `opts.on_startup` setting. See: **Configuration**
 
-To modify the cursorline and/or cursorcolumn settings while using Nvim, you can make use of the following user-exposed functions. These functions can be mapped to keybindings of your choice.
+To modify the cursorline and/or cursorcolumn settings while using Nvim, you can make use of the following user-exposed API functions. These functions can be mapped to keybindings of your choice.
 
 ```lua
-require'reticle'.enable_cursorline()
-require'reticle'.disable_cursorline()
+require'reticle'.set_cursorline(boolean: enable)
 require'reticle'.toggle_cursorline()
 
-require'reticle'.enable_cursorcolumn()
-require'reticle'.disable_cursorcolumn()
+require'reticle'.set_cursorcolumn(boolean: enable)
 require'reticle'.toggle_cursorcolumn()
 
 -- Cursorcross combines both the cursorline and cursorcolumn
-require'reticle'.enable_cursorcross()
-require'reticle'.disable_cursorcross()
+require'reticle'.set_cursorcross(boolean: enable)
 require'reticle'.toggle_cursorcross()
 ```
 
@@ -104,7 +101,7 @@ The following example illustrates how to create custom keymaps for the mentioned
 vim.keymap.set(
     'n',
     '[oc',
-    function() require'reticle'.enable_cursorline() end,
+    function() require'reticle'.set_cursorline(true) end,
     { desc = 'Enable the cursorline' }
 )
 
@@ -112,7 +109,7 @@ vim.keymap.set(
 vim.keymap.set(
     'n',
     ']oc',
-    function() require'reticle'.disable_cursorline() end,
+    function() require'reticle'.set_cursorline(false) end,
     { desc = 'Disable the cursorline' }
 )
 

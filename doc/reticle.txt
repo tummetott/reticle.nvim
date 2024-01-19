@@ -27,7 +27,7 @@ when they are not.
 
 2. REQUIREMENTS                                           *reticle.requirements*
 
-|reticle.nvim| requires Neovim 0.5 or higher.
+|reticle.nvim| requires Neovim 0.8 or higher.
 
 3. USAGE                                                         *reticle.usage*
 
@@ -83,13 +83,10 @@ setup(opts)                                                    *reticle.setup()*
         call the function without argument. Calling this function in mandatory
         in order to use the plugin.
 
-enable_cursorline()                                *reticle.enable_cursorline()*
+set_cursorline(enable)                                *reticle.set_cursorline()*
 
-        Enable the cursorline for the local window.
-
-disable_cursorline()                              *reticle.disable_cursorline()*
-
-        Disable the cursorline for the local window.
+        Enables or disables the cursorline based on the provided boolean
+        value for the local window.
 
 toggle_cursorline()                                *reticle.toggle_cursorline()*
 
@@ -99,13 +96,10 @@ has_cursorline()                                      *reticle.has_cursorline()*
 
         Return true if the cursorline is enabled for the local window.
 
-enable_cursorcolumn()                            *reticle.enable_cursorcolumn()*
+set_cursorcolumn(enable)                            *reticle.set_cursorcolumn()*
 
-        Enable the cursorcolumn for the local window.
-
-disable_cursorcolumn()                          *reticle.disable_cursorcolumn()*
-
-        Disable the cursorcolumn for the local window.
+        Enables or disables the cursorcolumn based on the provided boolean
+        value for the local window.
 
 toggle_cursorcolumn()                            *reticle.toggle_cursorcolumn()*
 
@@ -115,13 +109,10 @@ has_cursorcolumn()                                  *reticle.has_cursorcolumn()*
 
         Return true if the cursorcolumn is enabled for the local window.
 
-enable_cursorcross()                              *reticle.enable_cursorcross()*
+set_cursorcross(enable)                              *reticle.set_cursorcross()*
 
-        Enable both the cursorline and cursorcolumn for the local window.
-
-disable_cursorcross()                            *reticle.disable_cursorcross()*
-
-        Disable both the cursorline and cursorcolumn for the local window.
+        Enables or disables both the cursorline and cursorcolumn based on the
+        provided boolean value for the local window.
 
 toggle_cursorcross()                              *reticle.toggle_cursorcross()*
 
