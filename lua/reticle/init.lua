@@ -49,14 +49,14 @@ local on_enter = function(opt, win)
             vim.api.nvim_set_option_value('cursorlineopt', 'both', { win = win })
         end
         return
-    elseif contains(settings.on_focus[opt], ft)  then
-        enable = true
-    elseif contains(settings.always[opt], ft) then
-        enable = true
     elseif settings.disable_in_diff and get_option('diff', { win = win }) then
         enable = false
+    elseif contains(settings.always[opt], ft) then
+        enable = true
     elseif contains(settings.never[opt], ft) then
         enable = false
+    elseif contains(settings.on_focus[opt], ft)  then
+        enable = true
     elseif settings.follow[opt] then
         enable = enabled[opt]
     end
@@ -72,11 +72,13 @@ local on_leave = function(opt, win)
     local enable
     if contains(settings.ignore[opt], ft) then
         return
-    elseif contains(settings.on_focus[opt], ft) then
+    elseif settings.disable_in_diff and get_option('diff', { win = win }) then
         enable = false
     elseif contains(settings.always[opt], ft) then
         enable = true
     elseif contains(settings.never[opt], ft) then
+        enable = false
+    elseif contains(settings.on_focus[opt], ft) then
         enable = false
     elseif settings.follow[opt] then
         enable = false
@@ -136,14 +138,24 @@ local create_usercommands = function()
     create_cmd('ReticleToggleCursorcross', function() M.toggle_cursorcross() end, {})
 end
 
+-- When opening a neovim split window from the terminal (e.g. -O or -d option),
+-- the cursorline / cursorcolumn must be updated in each window.
+local update_split_windows = function()
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+        on_leave('cursorline', win)
+        on_leave('cursorcolumn', win)
+    end
+end
+
 ---@param user_config? reticle.opts
 M.setup = function(user_config)
     -- Parse config and init plugin state
     settings = conf.get_settings(user_config)
-    register_autocmds()
-    create_usercommands()
     enabled.cursorline = settings.on_startup.cursorline
     enabled.cursorcolumn = settings.on_startup.cursorcolumn
+    register_autocmds()
+    create_usercommands()
+    update_split_windows()
     -- Show cursorline and/or cursorcolumn on startup
     local win = vim.api.nvim_get_current_win()
     on_enter('cursorline', win)
