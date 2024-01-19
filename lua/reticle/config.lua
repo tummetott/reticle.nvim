@@ -6,6 +6,7 @@ local defaults = {
         cursorcolumn = false,
     },
     disable_in_insert = true,
+    disable_in_diff = true,
     always_highlight_number = false,
     follow = {
         cursorline = true,

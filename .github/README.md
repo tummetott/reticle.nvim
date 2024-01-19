@@ -154,6 +154,10 @@ require('reticle').setup {
     -- Default: true
     disable_in_insert = true,
 
+    -- Disable the cursorline and cursorcolumn in diff mode
+    -- Default: true
+    disable_in_diff = true,
+
     -- By default, nvim highlights the cursorline number only when the
     -- cursorline setting is active. Enabling this setting ensures that the
     -- cursorline number in every window is always highlighted, regardless of the

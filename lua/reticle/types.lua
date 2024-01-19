@@ -10,6 +10,7 @@
 --- @class reticle.opts
 --- @field on_startup? reticle.enabledopts
 --- @field disable_in_insert? boolean
+--- @field disable_in_diff? boolean
 --- @field always_highlight_number? boolean
 --- @field follow? reticle.enabledopts
 --- @field always? reticle.filetypeopts
@@ -31,6 +32,7 @@
 --- @class reticle.opts_internal
 --- @field on_startup reticle.enabledopts_internal
 --- @field disable_in_insert boolean
+--- @field disable_in_diff boolean
 --- @field always_highlight_number boolean
 --- @field follow reticle.enabledopts_internal
 --- @field always reticle.filetypeopts_internal

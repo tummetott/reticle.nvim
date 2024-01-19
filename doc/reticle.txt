@@ -147,6 +147,12 @@ disable_in_insert                               *reticle.opts.disable_in_insert*
 
             Don't show the cursorline and cursorcolumn when in insert mode.
 
+disable_in_diff                                   *reticle.opts.disable_in_diff*
+            Type: `boolean` ~
+            Default: `true` ~
+
+            Don't show the cursorline and cursorcolumn when in diff mode.
+
 always_highlight_number                   *reticle.opts.always_highlight_number*
             Type: `boolean` ~
             Default: `false` ~

@@ -40,21 +40,27 @@ end
 local on_enter = function(opt, win)
     local buf = vim.api.nvim_win_get_buf(win)
     local ft = get_option('filetype', { buf = buf })
+    local enable
     if contains(settings.ignore[opt], ft) then
-        -- TODO: make PR in trouble.nvim. cursorlineopt should be set to 'both'
-        -- when cursorline is enabled in trouble windows.
+        -- TODO: cursorlineopt should be set to 'both' when cursorline is
+        -- enabled in trouble windows. Wait until PR is merged before this lines
+        -- can be deleted.
         if ft == 'Trouble' and opt == 'cursorline' then
             vim.api.nvim_set_option_value('cursorlineopt', 'both', { win = win })
         end
         return
+    elseif contains(settings.on_focus[opt], ft)  then
+        enable = true
+    elseif contains(settings.always[opt], ft) then
+        enable = true
+    elseif settings.disable_in_diff and get_option('diff', { win = win }) then
+        enable = false
     elseif contains(settings.never[opt], ft) then
-        set_win_option(opt, false, win)
-    elseif contains(settings.on_focus[opt], ft) or
-        contains(settings.always[opt], ft) then
-        set_win_option(opt, true, win)
+        enable = false
     elseif settings.follow[opt] then
-        set_win_option(opt, enabled[opt], win)
+        enable = enabled[opt]
     end
+    set_win_option(opt, enable, win)
 end
 
 -- This function implements the logic whether and option is turned on or off on
@@ -63,15 +69,19 @@ end
 local on_leave = function(opt, win)
     local buf = vim.api.nvim_win_get_buf(win)
     local ft = get_option('filetype', { buf = buf })
+    local enable
     if contains(settings.ignore[opt], ft) then
         return
+    elseif contains(settings.on_focus[opt], ft) then
+        enable = false
     elseif contains(settings.always[opt], ft) then
-        set_win_option(opt, true, win)
-    elseif contains(settings.never[opt], ft) or
-        contains(settings.on_focus[opt], ft) or
-        settings.follow[opt] then
-        set_win_option(opt, false, win)
+        enable = true
+    elseif contains(settings.never[opt], ft) then
+        enable = false
+    elseif settings.follow[opt] then
+        enable = false
     end
+    set_win_option(opt, enable, win)
 end
 
 -- This wrapper function delays the on_enter() function in order to get the
