@@ -2,16 +2,16 @@ local M = {}
 
 local defaults = {
     on_startup = {
-        cursorline = false,
+        cursorline = true,
         cursorcolumn = false,
     },
-    disable_in_insert = true,
-    disable_in_diff = true,
-    always_highlight_number = false,
     follow = {
         cursorline = true,
         cursorcolumn = true,
     },
+    disable_in_insert = true,
+    disable_in_diff = true,
+    always_highlight_number = false,
     always = {
         cursorline = {},
         cursorcolumn = {},
@@ -20,27 +20,20 @@ local defaults = {
         cursorline = {},
         cursorcolumn = {},
     },
-    never = {
-        cursorline = {
-            'DressingInput',
-        },
-        cursorcolumn = {
-            'DressingInput',
-        },
-    },
     ignore = {
         cursorline = {
-            'TelescopePrompt',
-            'NvimTree',
-            'Trouble',
+            'DressingInput',
+            'FTerm',
             'NvimSeparator',
-        },
-        cursorcolumn = {
-            'TelescopePrompt',
             'NvimTree',
+            'TelescopePrompt',
             'Trouble',
-            'NvimSeparator',
         },
+        cursorcolumn = {},
+    },
+    never = {
+        cursorline = {},
+        cursorcolumn = {},
     },
 }
 

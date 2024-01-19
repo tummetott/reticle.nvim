@@ -5,12 +5,6 @@ reticle-contents	reticle.txt	/*reticle-contents*
 reticle.commands	reticle.txt	/*reticle.commands*
 reticle.configuration	reticle.txt	/*reticle.configuration*
 reticle.description	reticle.txt	/*reticle.description*
-reticle.disable_cursorcolumn()	reticle.txt	/*reticle.disable_cursorcolumn()*
-reticle.disable_cursorcross()	reticle.txt	/*reticle.disable_cursorcross()*
-reticle.disable_cursorline()	reticle.txt	/*reticle.disable_cursorline()*
-reticle.enable_cursorcolumn()	reticle.txt	/*reticle.enable_cursorcolumn()*
-reticle.enable_cursorcross()	reticle.txt	/*reticle.enable_cursorcross()*
-reticle.enable_cursorline()	reticle.txt	/*reticle.enable_cursorline()*
 reticle.functions	reticle.txt	/*reticle.functions*
 reticle.has_cursorcolumn()	reticle.txt	/*reticle.has_cursorcolumn()*
 reticle.has_cursorcross()	reticle.txt	/*reticle.has_cursorcross()*
@@ -20,6 +14,7 @@ reticle.nvim	reticle.txt	/*reticle.nvim*
 reticle.opts	reticle.txt	/*reticle.opts*
 reticle.opts.always	reticle.txt	/*reticle.opts.always*
 reticle.opts.always_highlight_number	reticle.txt	/*reticle.opts.always_highlight_number*
+reticle.opts.disable_in_diff	reticle.txt	/*reticle.opts.disable_in_diff*
 reticle.opts.disable_in_insert	reticle.txt	/*reticle.opts.disable_in_insert*
 reticle.opts.follow	reticle.txt	/*reticle.opts.follow*
 reticle.opts.ignore	reticle.txt	/*reticle.opts.ignore*
@@ -27,6 +22,9 @@ reticle.opts.never	reticle.txt	/*reticle.opts.never*
 reticle.opts.on_focus	reticle.txt	/*reticle.opts.on_focus*
 reticle.opts.on_startup	reticle.txt	/*reticle.opts.on_startup*
 reticle.requirements	reticle.txt	/*reticle.requirements*
+reticle.set_cursorcolumn()	reticle.txt	/*reticle.set_cursorcolumn()*
+reticle.set_cursorcross()	reticle.txt	/*reticle.set_cursorcross()*
+reticle.set_cursorline()	reticle.txt	/*reticle.set_cursorline()*
 reticle.setup()	reticle.txt	/*reticle.setup()*
 reticle.toggle_cursorcolumn()	reticle.txt	/*reticle.toggle_cursorcolumn()*
 reticle.toggle_cursorcross()	reticle.txt	/*reticle.toggle_cursorcross()*

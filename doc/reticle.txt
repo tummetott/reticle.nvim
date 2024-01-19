@@ -137,7 +137,7 @@ on_startup                                             *reticle.opts.on_startup*
             Fields: `cursorline`, `cursorcolumn` ~
             Default: ~
 >lua
-                { cursorline = false, cursorcolumn = false }
+                { cursorline = true, cursorcolumn = false }
 <
             The cursorline and cursorcolumn settings when Neovim starts up.
 
@@ -196,19 +196,6 @@ on_focus                                                 *reticle.opts.on_focus*
             enabled when the window is focused, regardless of the global
             setting.
 
-never                                                       *reticle.opts.never*
-            Type: `table` ~
-            Fields: `cursorline`, `cursorcolumn` ~
-            Default: ~
->lua
-                {
-                    cursorline = { 'DressingInput' },
-                    cursorcolumn = { 'DressingInput' },
-                }
-<
-            Specify filetypes where the cursorline and/or cursorcolumn are
-            never enabled, regardless of the global setting.
-
 ignore                                                     *reticle.opts.ignore*
             Type: `table` ~
             Fields: `cursorline`, `cursorcolumn` ~
@@ -216,20 +203,32 @@ ignore                                                     *reticle.opts.ignore*
 >lua
                 {
                     cursorline = {
-                        'TelescopePrompt',
-                        'NvimTree',
-                        'Trouble',
-                        'NvimSeparator',
+                       'DressingInput',
+                       'FTerm',
+                       'NvimSeparator',
+                       'NvimTree',
+                       'TelescopePrompt',
+                       'Trouble',
                     },
-                    cursorcolumn = {
-                        'TelescopePrompt',
-                        'NvimTree',
-                        'Trouble',
-                        'NvimSeparator',
-                    },
+                    cursorcolumn = {},
                 }
 <
             Define filetypes which are ignored by the plugin
+
+never                                                       *reticle.opts.never*
+            Type: `table` ~
+            Fields: `cursorline`, `cursorcolumn` ~
+            Default: ~
+>lua
+                { cursorline = {}, cursorcolumn = {} }
+<
+            Specify filetypes where the cursorline and/or cursorcolumn should
+            be explicitly disabled. Typically, you would include these
+            filetypes in the 'ignored' table. However, there are situations
+            where plugins enable cursorline/cursorcolumn without offering a
+            configuration option for disabling them. By adding these filetypes
+            to the 'never' table, you can override the plugin's settings and
+            turn off these features.
 
 
 6. HIGHLIGHTS                                               *reticle.highlights*
