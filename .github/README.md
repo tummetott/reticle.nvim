@@ -212,7 +212,7 @@ require('reticle').setup {
 
 The full documentation can be found inside the vimdoc:
 ```vim
-:help reticle.opts
+:help reticle.nvim
 ```
 
 #### Change highlight groups
