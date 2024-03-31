@@ -34,6 +34,21 @@ local get_option = function(name, opts)
     end
 end
 
+-- There is no straightforward way to detect diagnostic float windows. This
+-- function tries to detect them by checking various attributes which are
+-- specific to diagnostic float windows.
+local is_diagnostic_float = function(ft, win, buf)
+    local buftype = vim.api.nvim_buf_get_option(buf, 'buftype')
+    if buftype == 'nofile' and ft == '' then
+        local bufname = vim.api.nvim_buf_get_name(buf)
+        local win_config = vim.api.nvim_win_get_config(win)
+        if bufname == '' and win_config.relative ~= '' then
+            return true
+        end
+    end
+    return false
+end
+
 -- This function implements the logic whether and option is turned on or off on
 -- window enter, depending on the filetype of the window and the user
 -- configuration.
@@ -41,6 +56,10 @@ local on_enter = function(opt, win)
     local buf = vim.api.nvim_win_get_buf(win)
     local ft = get_option('filetype', { buf = buf })
     local enable
+    -- Dont enable cursorline for diagnostic float windows
+    if is_diagnostic_float(ft, win, buf) then
+        return
+    end
     if contains(settings.ignore[opt], ft) then
         -- TODO: cursorlineopt should be set to 'both' when cursorline is
         -- enabled in trouble windows. Wait until PR is merged before this lines
