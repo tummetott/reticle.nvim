@@ -34,32 +34,14 @@ local get_option = function(name, opts)
     end
 end
 
--- There is no straightforward way to detect diagnostic float windows. This
--- function tries to detect them by checking various attributes which are
--- specific to diagnostic float windows.
-local is_diagnostic_float = function(ft, win, buf)
-    local buftype = vim.api.nvim_buf_get_option(buf, 'buftype')
-    if buftype == 'nofile' and ft == '' then
-        local bufname = vim.api.nvim_buf_get_name(buf)
-        local win_config = vim.api.nvim_win_get_config(win)
-        if bufname == '' and win_config.relative ~= '' then
-            return true
-        end
-    end
-    return false
-end
-
 -- This function implements the logic whether and option is turned on or off on
 -- window enter, depending on the filetype of the window and the user
 -- configuration.
-local on_enter = function(opt, win)
+local on_enter = function(opt)
+    local win = vim.api.nvim_get_current_win()
     local buf = vim.api.nvim_win_get_buf(win)
     local ft = get_option('filetype', { buf = buf })
     local enable
-    -- Dont enable cursorline for diagnostic float windows
-    if is_diagnostic_float(ft, win, buf) then
-        return
-    end
     if contains(settings.ignore[opt], ft) then
         -- TODO: cursorlineopt should be set to 'both' when cursorline is
         -- enabled in trouble windows. Wait until PR is merged before this lines
@@ -77,6 +59,8 @@ local on_enter = function(opt, win)
     elseif contains(settings.on_focus[opt], ft) then
         enable = true
     elseif settings.follow[opt] then
+        enable = enabled[opt]
+    else
         enable = enabled[opt]
     end
     set_win_option(opt, enable, win)
@@ -101,28 +85,10 @@ local on_leave = function(opt, win)
         enable = false
     elseif settings.follow[opt] then
         enable = false
+    else
+        enable = enabled[opt]
     end
     set_win_option(opt, enable, win)
-end
-
--- This wrapper function delays the on_enter() function in order to get the
--- correct filetype
-local deferred_on_enter = function(opt, win)
-    vim.schedule(function()
-        -- Exit if window does not exist anymore after deferring
-        if vim.fn.win_id2win(win) == 0 then return end
-        on_enter(opt, win)
-    end)
-end
-
--- This wrapper function delays the on_leave() function in order to get the
--- correct filetype
-local deferred_on_leave = function(opt, win)
-    vim.schedule(function()
-        -- Exit if window does not exist anymore after deferring
-        if vim.fn.win_id2win(win) == 0 then return end
-        on_leave(opt, win)
-    end)
 end
 
 -- Initialize the cursorline / cursorcolumn on each window on startup.
@@ -130,8 +96,8 @@ local initialize_windows = function()
     local cur_win = vim.api.nvim_get_current_win()
     for _, win in ipairs(vim.api.nvim_list_wins()) do
         if win == cur_win then
-            on_enter('cursorline', win)
-            on_enter('cursorcolumn', win)
+            on_enter('cursorline')
+            on_enter('cursorcolumn')
         else
             on_leave('cursorline', win)
             on_leave('cursorcolumn', win)
@@ -149,27 +115,26 @@ local register_autocmds = function()
     local group = augroup('Reticle', { clear = true })
     autocmd(enter_events, {
         callback = function()
-            local win = vim.api.nvim_get_current_win()
-            deferred_on_enter('cursorline', win)
-            deferred_on_enter('cursorcolumn', win)
+            -- The on_enter function must be deferred in order to get the
+            -- correct filetype.
+            vim.schedule(function()
+                on_enter('cursorline')
+                on_enter('cursorcolumn')
+            end)
         end,
         group = group,
     })
     autocmd(leave_events, {
         callback = function()
+            -- The on_leave function must be deferred too in order to get the
+            -- correct filetype, however we must get the win id before the
+            -- deferral because afterwards, the current window has changed.
             local win = vim.api.nvim_get_current_win()
-            deferred_on_leave('cursorline', win)
-            deferred_on_leave('cursorcolumn', win)
-        end,
-        group = group,
-    })
-    autocmd('VimEnter', {
-        callback = function()
-            -- We call the init function on VimEnter to guarantee that windows
-            -- are already created, particularly when the plugin is loaded
-            -- directly during Vim startup.
             vim.schedule(function()
-                initialize_windows()
+                -- Exit if window does not exist anymore after deferring
+                if vim.fn.win_id2win(win) == 0 then return end
+                on_leave('cursorline', win)
+                on_leave('cursorcolumn', win)
             end)
         end,
         group = group,
@@ -190,10 +155,11 @@ M.setup = function(user_config)
     enabled.cursorcolumn = settings.on_startup.cursorcolumn
     register_autocmds()
     create_usercommands()
-    -- We must call the init function again here, because the user might
-    -- lazyload the plugin on the VeryLazy event (which is fired after
-    -- VimEnter).
-    initialize_windows()
+    -- The init function must be deffered to guarantee that all windows are
+    -- already created
+    vim.schedule(function()
+        initialize_windows()
+    end)
 end
 
 -- UTILITY FUNCTIONS
