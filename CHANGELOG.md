@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/tummetott/reticle.nvim/compare/v1.0.0...v1.0.1) (2024-05-13)
+
+
+### Bug Fixes
+
+* dont detect floating windows, only highlight the current window. Closes [#11](https://github.com/tummetott/reticle.nvim/issues/11) ([1aa463b](https://github.com/tummetott/reticle.nvim/commit/1aa463be8946359447d78e77d8865f0469d4c254))
+
 ## 1.0.0 (2024-04-02)
 
 
