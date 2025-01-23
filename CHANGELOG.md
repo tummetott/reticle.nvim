@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2](https://github.com/tummetott/reticle.nvim/compare/v1.0.1...v1.0.2) (2025-01-23)
+
+
+### Bug Fixes
+
+* replace deprecated `tbl_islist` by `islist` ([696e120](https://github.com/tummetott/reticle.nvim/commit/696e1204c613d148b393ecfac0b4ba84d09f6ac4))
+* replace missed `tbl_islist` ([f39f1da](https://github.com/tummetott/reticle.nvim/commit/f39f1da5a70e6085a29f39ab9b0c6b029d6fe633))
+
 ## [1.0.1](https://github.com/tummetott/reticle.nvim/compare/v1.0.0...v1.0.1) (2024-05-13)
 
 
