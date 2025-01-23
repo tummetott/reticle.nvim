@@ -39,13 +39,13 @@ local defaults = {
 
 M.option_check = function(dict1, dict2, path)
     path = path or 'reticle.opts'
-    if vim.tbl_islist(dict1) and vim.tbl_islist(dict2) then
+    if vim.islist(dict1) and vim.islist(dict2) then
         return
     end
-    if not vim.tbl_isempty(dict2) and vim.tbl_islist(dict2) then
+    if not vim.tbl_isempty(dict2) and vim.islist(dict2) then
         error(string.format("'%s' should be a dictionary-like table", path))
     end
-    if vim.tbl_islist(dict1) then
+    if vim.islist(dict1) then
         error(string.format("'%s' should be an array-like table.", path))
     end
     for key2, value2 in pairs(dict2) do
