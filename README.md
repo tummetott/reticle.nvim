@@ -1,7 +1,7 @@
 # reticle.nvim
 
 <p align="center">
-  <img src="./reticle.png" alt="reticle" width="200" height="200" />
+  <img src=".github/reticle.png" alt="reticle" width="200" height="200" />
 </p>
 
 ### :pencil: Description:
@@ -12,7 +12,7 @@ This plugin provides a convenient solution for configuring the `cursorline` and 
 
 ### 🎥 Preview:
 
-![preview](./preview.gif)
+![preview](.github/preview.gif)
 
 
 ### ✨ Features
